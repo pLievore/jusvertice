@@ -1,0 +1,510 @@
+@import "tailwindcss";
+
+/**
+ * JusVértice — papel claro + palco azul-noite.
+ *
+ * O corpo é papel (leitura longa no celular). O palco escuro existe onde há
+ * mídia (hero, CTA final, processo): ali a foto/vídeo noturno da marca lê como
+ * luz saindo do escuro, sem emenda. Mesma lógica do Andre-Watch, na cor da marca.
+ */
+@theme {
+  --color-background: #f7f5f0;
+  --color-foreground: #0e1a2e;
+  --color-muted: #5b6271;
+  --color-border: #e0dbd1;
+  --color-surface: #efebe3;
+
+  /* Palco */
+  --color-stage: #071429;
+  --color-stage-2: #0b1d3a;
+  --color-stage-foreground: #f3f1ec;
+  --color-stage-muted: #a3abb9;
+  --color-stage-border: #1f2d47;
+
+  /* Ouro da marca. Texto dourado só no palco (contraste); no papel é filete/estado. */
+  --color-gold: #c9a45c;
+  --color-gold-light: #e2c88f;
+  --color-gold-ink: #7a5c22;
+
+  --color-rust: #a4442a;
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --font-display: var(--font-newsreader), "Times New Roman", Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+}
+
+:root {
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 4rem);
+  --sticky-cta-h: 0px;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    /* Foco nunca atrás da barra fixa de WhatsApp (WCAG 2.4.11) */
+    scroll-padding-bottom: calc(var(--sticky-cta-h) + 1rem);
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    min-height: 100dvh;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 3px;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    display: block;
+  }
+}
+
+@layer components {
+  /* Escopo de palco: redefine os tokens, e tudo que lê var(--color-*) se inverte. */
+  .on-stage {
+    --color-background: var(--color-stage);
+    --color-foreground: var(--color-stage-foreground);
+    --color-muted: var(--color-stage-muted);
+    --color-border: var(--color-stage-border);
+    --color-surface: var(--color-stage-2);
+    background: var(--color-stage);
+    color: var(--color-stage-foreground);
+  }
+
+  .container-x {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Legenda de catálogo: serifa itálica, caixa de frase. */
+  .eyebrow {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.0625rem;
+    letter-spacing: 0.005em;
+    color: var(--color-muted);
+  }
+
+  .on-stage .eyebrow {
+    color: var(--color-gold-light);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+
+  .titulo {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 1.4rem + 4.2vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+
+  .titulo-md {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+
+  .meta {
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+  }
+
+  /* Ações */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 3.25rem;
+    padding: 0.9rem 1.6rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    text-align: center;
+    transition:
+      transform 300ms var(--ease-editorial),
+      background-color 300ms var(--ease-editorial),
+      color 300ms var(--ease-editorial),
+      border-color 300ms var(--ease-editorial);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  /* Primário = bloco de tinta no papel. */
+  .btn-primary {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  /* No palco o primário é o ouro da marca: é o botão que vende. */
+  .on-stage .btn-primary,
+  .btn-gold {
+    background: var(--color-gold);
+    color: var(--color-stage);
+  }
+
+  .on-stage .btn-primary:hover,
+  .btn-gold:hover {
+    background: var(--color-gold-light);
+  }
+
+  @media (hover: hover) {
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--color-border);
+    color: var(--color-foreground);
+  }
+
+  .on-stage .btn-ghost {
+    border-color: rgb(243 241 236 / 0.35);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-foreground);
+  }
+
+  .btn .seta {
+    transition: transform 300ms var(--ease-editorial);
+  }
+
+  .btn:hover .seta {
+    transform: translateX(4px);
+  }
+
+  .link-quiet {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+    text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+    transition: text-decoration-color 300ms var(--ease-editorial);
+  }
+
+  .link-quiet:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* Checklist: linhas de catálogo com fio de cabelo */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    min-height: 4.25rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: color 300ms var(--ease-editorial);
+  }
+
+  .check-row:has(input:focus-visible) {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 4px;
+  }
+
+  .check-box {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1.5px solid #8a8f9c;
+    transition:
+      background-color 300ms var(--ease-editorial),
+      border-color 300ms var(--ease-editorial);
+  }
+
+  .check-box svg {
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 300ms var(--ease-editorial),
+      transform 400ms var(--ease-editorial);
+  }
+
+  .check-row:has(input:checked) .check-box {
+    background: var(--color-foreground);
+    border-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .check-row:has(input:checked) .check-box svg {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* FAQ */
+  .faq-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 500ms var(--ease-editorial),
+      visibility 0s linear 500ms;
+  }
+
+  .faq-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 500ms var(--ease-editorial),
+      visibility 0s linear 0s;
+  }
+
+  .faq-panel > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Barra fixa de WhatsApp (celular) */
+  .sticky-cta {
+    position: fixed;
+    z-index: 40;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom));
+    background: var(--color-stage);
+    border-top: 1px solid var(--color-stage-border);
+    transition: transform 500ms var(--ease-editorial);
+  }
+
+  .sticky-cta[data-visible="false"] {
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Entrada do hero: CSS puro, começa em 0.01 para o título contar como LCP. */
+  @keyframes entrar {
+    from {
+      opacity: 0.01;
+      transform: translateY(18px);
+    }
+  }
+
+  @keyframes entrar-titulo {
+    from {
+      opacity: 0.01;
+      transform: translateY(0.25em);
+      filter: blur(8px);
+    }
+  }
+
+  .entrar {
+    animation: entrar 1s var(--ease-editorial) both;
+    animation-delay: calc(var(--d, 0) * 1ms);
+  }
+
+  .entrar-titulo {
+    animation: entrar-titulo 1.2s var(--ease-editorial) both;
+    animation-delay: calc(var(--d, 0) * 1ms);
+  }
+
+  /* Revelação ao rolar (o JS marca .reveal-ready; sem JS tudo aparece). */
+  [data-reveal] {
+    transition:
+      opacity 0.9s var(--ease-editorial),
+      transform 1s var(--ease-editorial),
+      clip-path 1.2s var(--ease-editorial);
+    transition-delay: calc(var(--i, 0) * 120ms);
+  }
+
+  .reveal-ready [data-reveal]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  /* Fotos entram por cortina, com a imagem assentando por dentro. */
+  .reveal-ready [data-reveal="foto"]:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-reveal="foto"] {
+    clip-path: inset(0 0 0 0);
+  }
+
+  [data-reveal="foto"] img {
+    transition: transform 1.6s var(--ease-editorial);
+    transition-delay: calc(var(--i, 0) * 120ms);
+  }
+
+  .reveal-ready [data-reveal="foto"]:not(.is-visible) img {
+    transform: scale(1.12);
+  }
+
+  /* Comparador: grade de prancheta e apontamentos que se desenham na revelação */
+  .planta-grade {
+    background-image:
+      linear-gradient(to right, rgb(233 238 246 / 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(233 238 246 / 0.07) 1px, transparent 1px);
+    background-size: 3.2% 5.7%;
+  }
+
+  .linha-apontamento {
+    stroke: #e88e6f;
+    stroke-width: 0.14;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  .reveal-ready [data-reveal="foto"] .linha-apontamento {
+    transition: stroke-dashoffset 1s var(--ease-editorial);
+    transition-delay: calc(var(--i, 0) * 180ms + 500ms);
+  }
+
+  .reveal-ready [data-reveal="foto"]:not(.is-visible) .linha-apontamento {
+    stroke-dashoffset: 1;
+  }
+
+  .marcador,
+  .etiqueta {
+    transition:
+      opacity 0.6s var(--ease-editorial),
+      scale 0.6s var(--ease-editorial);
+    transition-delay: calc(var(--i, 0) * 180ms + 350ms);
+  }
+
+  .etiqueta {
+    transition-delay: calc(var(--i, 0) * 180ms + 900ms);
+  }
+
+  .reveal-ready [data-reveal="foto"]:not(.is-visible) .marcador,
+  .reveal-ready [data-reveal="foto"]:not(.is-visible) .etiqueta {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  .marcador::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 999px;
+    border: 1.5px solid #e88e6f;
+    animation: pulso-marcador 2.4s var(--ease-editorial) infinite;
+  }
+
+  @keyframes pulso-marcador {
+    0% {
+      opacity: 0.8;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+
+  @keyframes pulso-rolagem {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+      transform-origin: top;
+      opacity: 0.5;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+      opacity: 1;
+    }
+  }
+
+  .pulso-rolagem {
+    animation: pulso-rolagem 2.4s var(--ease-editorial) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulso-rolagem,
+    .marcador::after,
+    .entrar,
+    .entrar-titulo {
+      animation: none;
+    }
+    [data-reveal],
+    [data-reveal="foto"] img,
+    .linha-apontamento,
+    .marcador,
+    .etiqueta {
+      transition: none;
+    }
+    .reveal-ready [data-reveal]:not(.is-visible) {
+      opacity: 1;
+      transform: none;
+      clip-path: none;
+    }
+    .reveal-ready [data-reveal="foto"]:not(.is-visible) img {
+      transform: none;
+    }
+    .btn,
+    .check-box,
+    .check-box svg,
+    .faq-panel,
+    .sticky-cta {
+      transition: none;
+    }
+  }
+}

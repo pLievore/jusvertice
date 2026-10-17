@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -15 240 240">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#F6E6B4"/>
+      <stop offset="0.45" stop-color="#D6B26A"/>
+      <stop offset="1" stop-color="#9E7A35"/>
+    </linearGradient>
+    <linearGradient id="s" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.5" stop-color="#CDD2DA"/>
+      <stop offset="1" stop-color="#7E8794"/>
+    </linearGradient>
+    <clipPath id="c"><path d="M0 0H200V82L125 200L76 90H0Z"/></clipPath>
+  </defs>
+  <rect x="-20" y="-15" width="240" height="240" rx="48" fill="#071631"/>
+  <path fill="url(#g)" d="M12 52H84V58.5H67.5V158C67.5 182 52 198 30 198C17 198 7 192 2.5 183L8.5 179C13 186 20.5 190.5 29.5 190.5C41.5 190.5 49 180 49 160V58.5H12Z"/>
+  <path fill="url(#g)" d="M87 45 96.5 38.5V100H87Z"/>
+  <g clip-path="url(#c)" fill="url(#s)">
+    <path d="M103.5 16 116 7.5V180H103.5Z"/>
+    <path d="M120 31 131 24V180H120Z"/>
+    <path d="M135 47 145 41V180H135Z"/>
+  </g>
+  <path fill="url(#s)" d="M76 90H101L125 156 172 82H198L125 200Z"/>
+</svg>
