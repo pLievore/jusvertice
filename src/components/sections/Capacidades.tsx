@@ -1,8 +1,9 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { capacidades } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 
-export function Capacidades() {
+export function Capacidades({ pagina }: { pagina: Pagina }) {
+  const capacidades = pagina.capacidades;
   return (
     <section aria-labelledby="capacidades-titulo" className="py-24 md:py-36">
       <div className="container-x">

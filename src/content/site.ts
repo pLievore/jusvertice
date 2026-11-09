@@ -30,12 +30,15 @@ export const empresa = {
   instagramHandle: "@jusvertice",
   cidade: "Maringá",
   uf: "PR",
-  regiao: "Maringá e região",
-  // PENDENTE: lista nominal confirmada pela cliente. Hoje = raio de ~80 km sugerido para a campanha.
-  cidades: ["Maringá", "Sarandi", "Paiçandu", "Mandaguaçu", "Marialva", "Astorga", "Cianorte"],
-  cnpj: "00.000.000/0001-00", // PENDENTE
-  crea: "CREA-PR 000000/D", // PENDENTE
-  oab: "OAB/PR 00.000", // PENDENTE
+  regiao: "Maringá, Ponta Grossa e região",
+  // Regiões atendidas (Gabi, 28/10): Maringá e região e Ponta Grossa e região.
+  cidades: ["Maringá", "Ponta Grossa"],
+  // CNPJ e OAB fora do site por enquanto (pedido da Gabi).
+  crea: "CREA-PR 196465/D",
+  rn: "RN 10337367914",
+  // PENDENTE: o bloco de contato do rodapé só aparece quando estes campos forem preenchidos.
+  email: "",
+  telefones: [] as string[], // ex.: "(44) 99999-9999"
   geo: { lat: -23.4205, lng: -51.9333 },
 } as const;
 
@@ -59,6 +62,7 @@ export function microcopyDiagnostico(modo: DiagnosticoModo = diagnostico.modo) {
 
 export { origens, type Origem } from "./origens";
 import type { Origem } from "./origens";
+import type { Pagina } from "./tipos";
 
 /** Acrescenta um código curto à mensagem para ligar a conversa à campanha (estágio 3 → 4 do funil). */
 export const incluirCodigoNaMensagem = true;
@@ -80,13 +84,14 @@ export const midia = {
 };
 
 export const hero = {
-  eyebrow: "Engenharia e advocacia · Maringá e região",
+  eyebrow: "Engenharia e consultoria jurídica · Maringá e Ponta Grossa",
   titulo: "Seu imóvel pode estar irregular sem você saber.",
   subtitulo:
-    "Isso costuma aparecer na hora de vender, financiar ou transferir. A gente resolve a parte técnica e a parte do cartório, do levantamento ao registro.",
+    "Isso costuma aparecer na hora de vender, financiar ou transferir. Nós resolvemos toda a parte técnica e a burocracia: do georreferenciamento ao registro.",
   cta: "Descobrir a situação do meu imóvel",
   ctaSecundario: "Fazer o autodiagnóstico",
-  posterAlt: "Casa moderna ao anoitecer, com as luzes se acendendo.",
+  ctaBarra: "Descobrir a situação do imóvel",
+  posterAlt: "Receptor de georreferenciamento sobre um marco, à beira de um campo de soja, ao nascer do sol.",
 };
 
 export const checklist = {
@@ -112,6 +117,8 @@ export const antesDepois = {
   eyebrow: "Arraste para comparar",
   titulo: "O que o diagnóstico encontra num imóvel como o seu.",
   intro: "De um lado, o que deveria constar no papel. Do outro, o imóvel depois de regularizado.",
+  imagem: imgAntesDepois,
+  planta: imgAntesDepoisPlanta,
   alt: "Fachada de uma casa moderna de dois pavimentos, com garagem anexa.",
   altPlanta: "A mesma fachada desenhada como projeto técnico, com os problemas apontados.",
   antes: { rotulo: "No projeto" },
@@ -158,16 +165,16 @@ export const custo = {
 
 export const diferencial = {
   eyebrow: "Quem cuida do seu caso",
-  titulo: "Engenharia e advocacia na mesma casa.",
+  titulo: "Engenharia e consultoria jurídica na mesma casa.",
   paragrafos: [
-    "Quase todo caso tem uma parte técnica e uma parte de cartório. Uma construção diferente do projeto aprovado é assunto de engenharia. Uma escritura que nunca foi feita é assunto jurídico.",
+    "Quase todo caso tem uma parte técnica e uma parte documental. Uma construção diferente do projeto aprovado é assunto de engenharia. Uma escritura que nunca foi feita é assunto jurídico.",
     "Quando só uma das partes é resolvida, o imóvel continua travado. Aqui as duas andam juntas, do levantamento no terreno até o registro na matrícula.",
   ],
   pessoas: [
-    { nome: "Gabriella Stacheski", papel: "Advocacia, regularização imobiliária" },
-    { nome: "PH Bobato", papel: "Engenharia" }, // PENDENTE: confirmar cargo
+    { nome: "Gabriella Stacheski", papel: "Advogada especialista em direito imobiliário" },
+    { nome: "Paulo Henrique Bobato", papel: "Engenheiro civil e técnico agrimensor" },
   ],
-  fotoAlt: "Gabriella Stacheski e PH Bobato, da JusVértice, sorrindo em frente a uma casa iluminada à noite.",
+  fotoAlt: "Gabriella Stacheski e Paulo Henrique Bobato, da JusVértice, sorrindo em frente a uma casa iluminada à noite.",
 };
 
 export const situacoes = {
@@ -202,6 +209,14 @@ export const situacoes = {
       imagem: imgSitGaveta,
       alt: "Gaveta de madeira entreaberta com um contrato dobrado e as chaves da casa.",
     },
+    {
+      origem: "georreferenciamento" as Origem,
+      titulo: "Georreferenciamento rural",
+      texto: "Para vender, desmembrar ou transferir um imóvel rural, o cartório exige o georreferenciamento. Fazemos o levantamento e a certificação até o registro.",
+      // PROVISÓRIO: mesma foto da seção de capacidade técnica; prompt da definitiva em docs/midia-prompts.md
+      imagem: imgCapGeo,
+      alt: "Receptor GNSS sobre tripé à beira de uma plantação, ao nascer do sol.",
+    },
   ],
   cta: "Falar sobre isso",
 };
@@ -211,7 +226,7 @@ export const comoFunciona = {
   titulo: "Três passos, e você decide com tudo na mesa.",
   passos: [
     { titulo: "Você manda a matrícula", texto: "E conta o que está acontecendo. Tudo pelo WhatsApp." },
-    { titulo: "A gente analisa", texto: "Engenharia e advocacia olham o papel e o terreno e identificam o que precisa ser feito." },
+    { titulo: "Os especialistas analisam", texto: "Engenharia, agrimensura e consultoria jurídica." },
     { titulo: "Você recebe o caminho", texto: "Com prazo e custo, antes de decidir qualquer coisa." },
   ],
   cta: "Começar meu diagnóstico",
@@ -270,7 +285,7 @@ export const faq = {
     },
     {
       pergunta: "Vocês atendem a minha cidade?",
-      resposta: `Atendemos ${empresa.cidades.slice(0, -1).join(", ")} e ${empresa.cidades.at(-1)}. Se a sua cidade não está na lista, chame no WhatsApp que a gente confirma.`,
+      resposta: "Atendemos Maringá e região e Ponta Grossa e região. Se a sua cidade não está na lista, chame no WhatsApp e confirme.",
     },
   ],
   cta: "Tirar uma dúvida no WhatsApp",
@@ -287,7 +302,7 @@ export function perguntaDiagnostico(modo: DiagnosticoModo = diagnostico.modo) {
   if (modo === "cobrado") {
     return {
       pergunta: "Por que o diagnóstico é cobrado?",
-      resposta: `Porque é uma análise feita por engenharia e advocacia juntas. O valor de ${diagnostico.precoCobrado} é descontado do serviço se você seguir com a gente.`,
+      resposta: `Porque é uma análise feita por engenharia e consultoria jurídica juntas. O valor de ${diagnostico.precoCobrado} é descontado do serviço se você seguir com a gente.`,
     };
   }
   return null;
@@ -298,4 +313,27 @@ export const ctaFinal = {
   titulo: "Fale com a JusVértice e descubra a situação do seu imóvel.",
   cta: "Falar no WhatsApp",
   alt: "Casa iluminada à noite, vista do jardim.",
+};
+
+/** Página de regularização imobiliária (/). */
+export const paginaRegularizacao: Pagina = {
+  origens: {
+    topo: "topo",
+    checklist: "checklist",
+    comoFunciona: "como-funciona",
+    faq: "faq",
+    rodape: "rodape",
+    barraFixa: "barra-fixa",
+    cabecalho: "cabecalho",
+  },
+  hero,
+  checklist,
+  comparador: antesDepois,
+  custo,
+  diferencial,
+  situacoes,
+  comoFunciona,
+  capacidades,
+  faq,
+  ctaFinal,
 };

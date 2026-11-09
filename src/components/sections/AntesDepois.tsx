@@ -17,14 +17,14 @@
 import { useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
-import { antesDepois, custo, midia } from "@/content/site";
+import type { ConteudoComparador, Pagina } from "@/content/tipos";
 
 const limitar = (v: number) => Math.min(100, Math.max(0, v));
 const REPOUSO = 55;
-const proporcao = `${midia.antesDepois.width} / ${midia.antesDepois.height}`;
-const altura = (100 * midia.antesDepois.height) / midia.antesDepois.width; // altura do viewBox das setas
 
-export function AntesDepois() {
+function Comparador({ antesDepois }: { antesDepois: ConteudoComparador }) {
+  const proporcao = `${antesDepois.imagem.width} / ${antesDepois.imagem.height}`;
+  const altura = (100 * antesDepois.imagem.height) / antesDepois.imagem.width; // altura do viewBox das setas
   const reduce = useReducedMotion();
   const [pos, setPos] = useState(100);
   const caixaRef = useRef<HTMLDivElement>(null);
@@ -77,8 +77,7 @@ export function AntesDepois() {
   }, [reduce]);
 
   return (
-    <section aria-labelledby="antes-depois-titulo" className="border-y border-border bg-surface py-24 md:py-36">
-      <div className="container-x">
+    <>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
           <div>
             <p className="eyebrow" data-reveal>
@@ -110,7 +109,7 @@ export function AntesDepois() {
           >
             {/* Depois: a foto */}
             <Image
-              src={midia.antesDepois}
+              src={antesDepois.imagem}
               alt={`${antesDepois.alt} Regularizado.`}
               fill
               sizes="(min-width: 1280px) 1200px, 100vw"
@@ -126,7 +125,7 @@ export function AntesDepois() {
             {/* Antes: o projeto, recortado até o divisor */}
             <div className="planta absolute inset-0 z-20" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
               <Image
-                src={midia.antesDepoisPlanta}
+                src={antesDepois.planta}
                 alt={antesDepois.altPlanta}
                 fill
                 sizes="(min-width: 1280px) 1200px, 100vw"
@@ -227,6 +226,28 @@ export function AntesDepois() {
             </li>
           ))}
         </ol>
+    </>
+  );
+}
+
+/** Comparador (se a página tiver) + "o que muda". Sem comparador, o título da seção vem de `custo`. */
+export function AntesDepois({ pagina }: { pagina: Pagina }) {
+  const { comparador, custo } = pagina;
+  return (
+    <section aria-labelledby="antes-depois-titulo" className="border-y border-border bg-surface py-24 md:py-36">
+      <div className="container-x">
+        {comparador ? (
+          <Comparador antesDepois={comparador} />
+        ) : (
+          <div>
+            <p className="eyebrow" data-reveal>
+              {custo.eyebrow}
+            </p>
+            <h2 id="antes-depois-titulo" className="titulo mt-5 max-w-[20ch]" data-reveal style={{ "--i": 1 } as CSSProperties}>
+              {custo.titulo}
+            </h2>
+          </div>
+        )}
 
         {/* O que muda, nas palavras da cliente */}
         <div className="mt-16 grid gap-12 md:mt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-24">

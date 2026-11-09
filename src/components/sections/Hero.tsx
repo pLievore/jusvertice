@@ -21,7 +21,8 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "mo
 import Image, { getImageProps } from "next/image";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import heroMidia from "@/content/hero-midia.json";
-import { hero, microcopyDiagnostico, midia } from "@/content/site";
+import { microcopyDiagnostico, midia } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
 const QUADROS = heroMidia.quadros;
@@ -40,11 +41,11 @@ function useCelular() {
   return celular;
 }
 
-function Poster({ final = false }: { final?: boolean }) {
+function Poster({ final = false, alt }: { final?: boolean; alt: string }) {
   return (
     <Image
       src={final ? midia.heroPosterFinal : midia.heroPoster}
-      alt={hero.posterAlt}
+      alt={alt}
       fill
       priority
       sizes="100vw"
@@ -57,7 +58,8 @@ function Poster({ final = false }: { final?: boolean }) {
 /** URL otimizada do primeiro quadro, para o atributo poster do <video>. */
 const posterVideo = getImageProps({ src: midia.heroPoster, alt: "", width: heroMidia.largura, quality: 88 }).props.src;
 
-export function Hero() {
+export function Hero({ pagina }: { pagina: Pagina }) {
+  const hero = pagina.hero;
   const reduce = useReducedMotion();
   const celular = useCelular();
   const scrubbing = !reduce && celular === false && QUADROS > 0;
@@ -196,7 +198,7 @@ export function Hero() {
               className="absolute inset-0 will-change-transform"
               style={reduce || scrubbing ? undefined : { scale: escala, y: deslocamento }}
             >
-              <Poster final={!!reduce && QUADROS > 0} />
+              <Poster final={!!reduce && QUADROS > 0} alt={hero.posterAlt} />
             </motion.div>
           )}
           {scrubbing && (
@@ -251,7 +253,7 @@ export function Hero() {
             </p>
             <h1
               id="hero-titulo"
-              className="display entrar-titulo mt-4 max-w-[13ch] text-[clamp(2.9rem,1.1rem+7.2vw,7.5rem)]"
+              className="display entrar-titulo mt-4 max-w-[13ch] text-[clamp(2.5rem,1.1rem+7.2vw,7.5rem)]"
               style={{ textShadow: "0 1px 28px rgba(7,20,41,0.65)", "--d": 90 } as CSSProperties}
             >
               {hero.titulo}
@@ -263,7 +265,7 @@ export function Hero() {
               {hero.subtitulo}
             </p>
             <div className="entrar mt-8 flex flex-col gap-3 sm:flex-row sm:items-center" style={{ "--d": 380 } as CSSProperties}>
-              <WhatsAppLink id="cta-topo" origem="topo" arrow className="btn btn-primary">
+              <WhatsAppLink id="cta-topo" origem={pagina.origens.topo} arrow className="btn btn-primary">
                 {hero.cta}
               </WhatsAppLink>
               <a href="#checklist" className="btn btn-ghost">

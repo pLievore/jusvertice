@@ -18,9 +18,9 @@ const sans = Geist({
   display: "swap",
 });
 
-const titulo = "Regularização de imóveis em Maringá e região | JusVértice";
+const titulo = "Regularização de imóveis em Maringá e Ponta Grossa | JusVértice";
 const descricao =
-  "Seu imóvel pode estar irregular sem você saber. Engenharia e advocacia para regularizar antes da venda, do financiamento ou da transferência. Diagnóstico pelo WhatsApp.";
+  "Seu imóvel pode estar irregular sem você saber. Engenharia e consultoria jurídica para regularizar antes da venda, do financiamento ou da transferência. Diagnóstico pelo WhatsApp.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(empresa.url),

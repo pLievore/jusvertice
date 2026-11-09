@@ -3,10 +3,12 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import { type CSSProperties, useRef } from "react";
-import { ctaFinal, microcopyDiagnostico, midia } from "@/content/site";
+import { microcopyDiagnostico, midia } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
-export function CtaFinal() {
+export function CtaFinal({ pagina }: { pagina: Pagina }) {
+  const ctaFinal = pagina.ctaFinal;
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -15,7 +17,7 @@ export function CtaFinal() {
   return (
     <section ref={ref} id="cta-final" aria-labelledby="cta-final-titulo" className="on-stage relative overflow-hidden">
       <motion.div aria-hidden="true" className="absolute -inset-y-[10%] inset-x-0 will-change-transform" style={reduce ? undefined : { y }}>
-        <Image src={midia.ctaFinal} alt="" fill sizes="100vw" quality={88} placeholder="blur" className="object-cover" />
+        <Image src={ctaFinal.imagem ?? midia.ctaFinal} alt="" fill sizes="100vw" quality={88} placeholder="blur" className="object-cover" />
       </motion.div>
       <div
         aria-hidden="true"
@@ -31,7 +33,7 @@ export function CtaFinal() {
           {ctaFinal.titulo}
         </h2>
         <div className="mt-10" data-reveal style={{ "--i": 2 } as CSSProperties}>
-          <WhatsAppLink origem="rodape" arrow className="btn btn-primary">
+          <WhatsAppLink origem={pagina.origens.rodape} arrow className="btn btn-primary">
             {ctaFinal.cta}
           </WhatsAppLink>
           <p className="meta mt-4">{microcopyDiagnostico()}</p>

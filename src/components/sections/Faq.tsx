@@ -1,14 +1,15 @@
 "use client";
 
 import { type CSSProperties, useId, useState } from "react";
-import { faq } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 import { track } from "@/lib/tracking";
 import { PlusIcon } from "../icons";
 import { WhatsAppLink } from "../WhatsAppLink";
 
 type Item = { pergunta: string; resposta: string };
 
-export function Faq({ itens }: { itens: Item[] }) {
+export function Faq({ pagina, itens }: { pagina: Pagina; itens: Item[] }) {
+  const faq = pagina.faq;
   const [aberta, setAberta] = useState<number | null>(null);
   const base = useId();
 
@@ -22,7 +23,7 @@ export function Faq({ itens }: { itens: Item[] }) {
           <h2 id="faq-titulo" className="titulo mt-5" data-reveal style={{ "--i": 1 } as CSSProperties}>
             {faq.titulo}
           </h2>
-          <WhatsAppLink origem="faq" arrow className="link-quiet mt-8" >
+          <WhatsAppLink origem={pagina.origens.faq} arrow className="link-quiet mt-8" >
             {faq.cta}
           </WhatsAppLink>
         </div>

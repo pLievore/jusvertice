@@ -2,11 +2,13 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { type CSSProperties, useRef } from "react";
-import { comoFunciona, microcopyDiagnostico } from "@/content/site";
+import { microcopyDiagnostico } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
 /** Linha que liga os três passos e se desenha conforme a rolagem (vertical no celular, horizontal no desktop). */
-export function ComoFunciona() {
+export function ComoFunciona({ pagina }: { pagina: Pagina }) {
+  const comoFunciona = pagina.comoFunciona;
   const reduce = useReducedMotion();
   const ref = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 45%"] });
@@ -56,7 +58,7 @@ export function ComoFunciona() {
 
         <div className="mt-16 flex flex-col gap-4 border-t border-stage-border pt-10 sm:flex-row sm:items-center sm:justify-between md:mt-24" data-reveal>
           <p className="meta">{microcopyDiagnostico()}</p>
-          <WhatsAppLink origem="como-funciona" arrow className="btn btn-primary">
+          <WhatsAppLink origem={pagina.origens.comoFunciona} arrow className="btn btn-primary">
             {comoFunciona.cta}
           </WhatsAppLink>
         </div>

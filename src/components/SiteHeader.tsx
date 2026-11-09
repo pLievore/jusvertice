@@ -12,6 +12,7 @@
  */
 import { type MotionStyle, motion, useMotionValue, useScroll, useTransform } from "motion/react";
 import { useLayoutEffect } from "react";
+import type { Origem } from "@/content/origens";
 import { Monogram, Wordmark } from "./Logo";
 import { WhatsAppLink } from "./WhatsAppLink";
 
@@ -19,7 +20,7 @@ const STAGE = { bg: "rgba(7,20,41,0)", fg: "#f3f1ec", border: "rgba(31,45,71,0)"
 const PAPER = { bg: "rgba(247,245,240,0.96)", fg: "#0e1a2e", border: "rgba(224,219,209,1)" };
 const FLIP: [number, number] = [0.72, 0.98];
 
-export function SiteHeader() {
+export function SiteHeader({ origem }: { origem: Origem }) {
   const { scrollY } = useScroll();
   const progress = useMotionValue(0);
 
@@ -69,7 +70,7 @@ export function SiteHeader() {
         </a>
 
         <motion.span className="hidden md:block" style={{ borderColor: ctaBorder }}>
-          <WhatsAppLink origem="cabecalho" className="btn min-h-11 border border-[inherit] px-5 py-2.5 text-[0.875rem]">
+          <WhatsAppLink origem={origem} className="btn min-h-11 border border-[inherit] px-5 py-2.5 text-[0.875rem]">
             Falar no WhatsApp
           </WhatsAppLink>
         </motion.span>

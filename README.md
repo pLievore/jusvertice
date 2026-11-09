@@ -11,12 +11,21 @@ npm run dev          # http://localhost:3000
 npm run build && npm start
 ```
 
+## Páginas
+
+| Rota | Público | Conteúdo |
+| --- | --- | --- |
+| `/` | Regularização imobiliária (urbano) | `src/content/site.ts` › `paginaRegularizacao` |
+| `/georreferenciamento` | Regularização de propriedade rural (medição, georreferenciamento, retificação, desmembramento, registro) | `src/content/georreferenciamento.ts` |
+
+As duas usam os mesmos componentes (`src/components/PaginaLanding.tsx`) com conteúdo no formato `Pagina` (`src/content/tipos.ts`). Cada página tem origens de WhatsApp próprias (a rural usa `georref-*`), então o painel separa os leads por página e por botão.
+
 ## Onde mexer
 
 | O quê | Onde |
 | --- | --- |
-| Todo o texto, WhatsApp, CNPJ/CREA/OAB, cidades, modo do diagnóstico | `src/content/site.ts` |
-| Mensagem de cada botão (por origem) | `origens` em `src/content/site.ts` |
+| Todo o texto, WhatsApp, CREA/RN, e-mail e telefones, regiões, modo do diagnóstico | `src/content/site.ts` |
+| Mensagem de cada botão (por origem) | `src/content/origens.ts` |
 | Diagnóstico gratuito / neutro / cobrado | `diagnostico.modo` em `src/content/site.ts` |
 | Seções da página | `src/components/sections/*` (ordem em `src/app/page.tsx`) |
 | Cores, tipografia e animações em CSS | `src/app/globals.css` |

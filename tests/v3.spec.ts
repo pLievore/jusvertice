@@ -37,7 +37,7 @@ test("situações fixadas (desktop): focar o link de um slide leva a rolagem at�
   await page.goto("/");
   await waitHydrated(page);
   const links = page.locator("section[aria-labelledby='situacoes-titulo'] a[data-origem]");
-  await expect(links).toHaveCount(4);
+  await expect(links).toHaveCount(5);
   await links.nth(2).focus();
   await page.waitForTimeout(1200);
   const visivel = await links.nth(2).evaluate((el) => {

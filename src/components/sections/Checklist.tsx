@@ -1,11 +1,12 @@
 "use client";
 
 import { type CSSProperties, useEffect, useRef, useState } from "react";
-import { checklist } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 import { CheckIcon } from "../icons";
 import { WhatsAppLink } from "../WhatsAppLink";
 
-export function Checklist({ microcopy }: { microcopy: string }) {
+export function Checklist({ pagina, microcopy }: { pagina: Pagina; microcopy: string }) {
+  const checklist = pagina.checklist;
   const [marcados, setMarcados] = useState<string[]>([]);
   const listaRef = useRef<HTMLUListElement>(null);
 
@@ -71,7 +72,7 @@ export function Checklist({ microcopy }: { microcopy: string }) {
           </blockquote>
 
           <div className="mt-10" data-reveal>
-            <WhatsAppLink origem="checklist" extra={extra} arrow className="btn btn-primary w-full sm:w-auto">
+            <WhatsAppLink origem={pagina.origens.checklist} extra={extra} arrow className="btn btn-primary w-full sm:w-auto">
               {checklist.cta}
             </WhatsAppLink>
             <p className="meta mt-3" aria-live="polite">

@@ -11,7 +11,8 @@
     "test:e2e": "playwright test",
     "test:contrast": "node scripts/contrast.mjs",
     "lighthouse": "node scripts/lighthouse.mjs",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "validar-hero": "node scripts/validar-hero.mjs"
   },
   "dependencies": {
     "lenis": "^1.3.27",

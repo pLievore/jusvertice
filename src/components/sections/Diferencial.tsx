@@ -1,9 +1,10 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import fotoEquipe from "@/assets/equipe.jpg";
-import { diferencial } from "@/content/site";
+import type { Pagina } from "@/content/tipos";
 
-export function Diferencial() {
+export function Diferencial({ pagina }: { pagina: Pagina }) {
+  const diferencial = pagina.diferencial;
   return (
     <section aria-labelledby="diferencial-titulo" className="py-24 md:py-36">
       <div className="container-x grid gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end lg:gap-20">

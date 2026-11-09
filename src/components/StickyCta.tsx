@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Origem } from "@/content/origens";
 import { WhatsAppLink } from "./WhatsAppLink";
 
 /**
  * Botão de WhatsApp fixo no rodapé da tela, só no celular.
  * Aparece depois que o botão do topo sai da tela e some quando o botão final aparece.
  */
-export function StickyCta() {
+export function StickyCta({ origem, texto }: { origem: Origem; texto: string }) {
   const [visivel, setVisivel] = useState(false);
 
   useEffect(() => {
@@ -57,8 +58,8 @@ export function StickyCta() {
 
   return (
     <div className="sticky-cta on-stage md:hidden" data-visible={visivel} inert={!visivel}>
-      <WhatsAppLink origem="barra-fixa" className="btn btn-primary w-full">
-        Descobrir a situação do imóvel
+      <WhatsAppLink origem={origem} className="btn btn-primary w-full">
+        {texto}
       </WhatsAppLink>
     </div>
   );
