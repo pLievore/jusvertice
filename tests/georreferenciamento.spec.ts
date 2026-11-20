@@ -76,8 +76,14 @@ for (const rota of ["/", ROTA]) {
   });
 }
 
-test("georref: imagem de compartilhamento própria", async ({ request }) => {
-  const r = await request.get(`${ROTA}/opengraph-image`);
+test("georref: imagem de compartilhamento própria", async ({ page, request }) => {
+  // Lê o endereço da própria tag og:image (é o que o WhatsApp e as redes usam). Dentro do grupo
+  // de rotas (site) o Next acrescenta um sufixo ao caminho, então ele não é fixo.
+  await page.goto(ROTA);
+  const og = await page.locator('meta[property="og:image"]').getAttribute("content");
+  expect(og).toMatch(/\/georreferenciamento\/opengraph-image/);
+  const { pathname, search } = new URL(og!);
+  const r = await request.get(`${pathname}${search}`);
   expect(r.status()).toBe(200);
   expect(r.headers()["content-type"]).toContain("image/png");
 });

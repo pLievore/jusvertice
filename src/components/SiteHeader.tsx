@@ -81,7 +81,7 @@ export function SiteHeader({ origem }: { origem: Origem }) {
             <ul className="flex items-center gap-7 text-[0.9375rem] font-medium">
               {NAV.map((n) => (
                 <li key={n.href}>
-                  <a href={n.href} className="link-quiet no-underline hover:underline">
+                  <a href={n.href} className="link-quiet no-underline hover:underline" data-track="navegacao_click" data-track-destino={n.href}>
                     {n.texto}
                   </a>
                 </li>

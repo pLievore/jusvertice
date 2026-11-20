@@ -2,6 +2,7 @@
 
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import type { Pagina } from "@/content/tipos";
+import { track } from "@/lib/tracking";
 import { CheckIcon } from "../icons";
 import { CabecalhoSecao, Vertice } from "../Marcos";
 import { WhatsAppLink } from "../WhatsAppLink";
@@ -15,14 +16,18 @@ export function Checklist({ pagina, microcopy }: { pagina: Pagina; microcopy: st
   const [marcados, setMarcados] = useState<string[]>([]);
   const listaRef = useRef<HTMLUListElement>(null);
 
-  // Quem marcou algo antes do JS carregar (4G lento) não perde o que marcou.
+  // Quem marcou algo antes do JS carregar (4G lento) não perde o que marcou, e a marcação conta no painel.
   useEffect(() => {
     const ja = Array.from(listaRef.current?.querySelectorAll<HTMLInputElement>("input:checked") ?? [], (i) => i.value);
-    if (ja.length) setMarcados((prev) => Array.from(new Set([...prev, ...ja])));
+    if (!ja.length) return;
+    setMarcados((prev) => Array.from(new Set([...prev, ...ja])));
+    for (const item of ja) track("checklist_marcado", { item, marcado: true });
   }, []);
 
-  const alternar = (id: string, on: boolean) =>
+  const alternar = (id: string, on: boolean) => {
     setMarcados((prev) => (on ? [...prev, id] : prev.filter((x) => x !== id)));
+    track("checklist_marcado", { item: id, marcado: on });
+  };
 
   const extra = marcados.length
     ? "O que marquei no site:\n" +
@@ -33,7 +38,7 @@ export function Checklist({ pagina, microcopy }: { pagina: Pagina; microcopy: st
     : undefined;
 
   return (
-    <section id="checklist" aria-labelledby="checklist-titulo" className="relative md:pb-32">
+    <section id="checklist" aria-labelledby="checklist-titulo" data-secao="checklist" className="relative md:pb-32">
       <div className="mx-auto max-w-[80rem] md:px-[var(--gutter)]">
         <div className="on-stage relative overflow-hidden px-[var(--gutter)] py-20 md:rounded-[2rem] md:px-14 md:py-20 lg:px-20">
           <div className="relative grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">

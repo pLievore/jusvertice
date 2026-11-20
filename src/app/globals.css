@@ -512,6 +512,44 @@
     transform: scaleX(0);
   }
 
+  /* ── Painel administrativo ──────────────────────────────────────────────── */
+
+  .painel :focus-visible {
+    outline: 2px solid #2a78d6;
+    outline-offset: 2px;
+  }
+
+  .painel-cartao {
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 16px;
+    box-shadow:
+      0 1px 2px rgb(10 31 63 / 0.04),
+      0 10px 24px -18px rgb(10 31 63 / 0.18);
+  }
+
+  .painel-icone {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    color: #5b677a;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .painel-icone:hover {
+    background: #eef1f6;
+    color: #0a1f3f;
+  }
+
+  .painel-icone[aria-pressed="true"] {
+    background: #e6effb;
+    color: #1c5cab;
+  }
+
   /* ── Comparador ─────────────────────────────────────────────────────────── */
 
   .planta-grade {

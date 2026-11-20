@@ -4,23 +4,30 @@
  * Camada de eventos do funil (plano › "Medição e painel").
  *
  * 1. Chegada à página, com origem  → page_view (+ UTMs/fbclid guardados)
- * 2. Leu a página                   → checklist_lido, scroll_50, scroll_90
- * 3. Iniciou conversa               → whatsapp_click { origem, codigo }
- * 4. Virou atendimento              → marcação manual da Gabriella, pelo código
+ * 2. Leu a página                   → checklist_lido, scroll_50/90, secao_vista, engajamento
+ * 3. Iniciou conversa               → whatsapp_click { origem }, com o código do visitante
+ * 4. Virou atendimento / fechou     → marcado no painel (/admin/leads), pelo código
  *
- * Cada evento vai para: window.dataLayer, Meta Pixel (se carregado) e /api/events
- * (que repassa à API de Conversões quando as variáveis de ambiente existirem).
- * O mesmo event_id é usado no Pixel e na CAPI para deduplicar.
+ * Cada evento vai para: window.dataLayer, /api/events (que grava para o painel) e, só os do
+ * EVENTO_META, para o Pixel da Meta e a API de Conversões, com o mesmo event_id para deduplicar.
+ *
+ * Aparelho interno (marcado no painel, Configuração): nada é enviado, para as visitas da equipe
+ * não entrarem na conta.
  */
 
-export type EventName = "page_view" | "scroll_50" | "scroll_90" | "checklist_lido" | "whatsapp_click" | "faq_aberta";
+import { EVENTO_META, type EventName, PARAMETROS_CAMPANHA } from "./eventos";
+
+export type { EventName } from "./eventos";
 
 const ATTR_KEY = "jv_attr";
 const CODE_KEY = "jv_codigo";
+const SESSAO_KEY = "jv_sessao";
+const PRIMEIRA_KEY = "jv_primeira_visita";
+export const INTERNO_KEY = "jv_interno";
 const ATTR_TTL_MS = 30 * 24 * 60 * 60 * 1000;
-const PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"] as const;
+const SESSAO_OCIOSA_MS = 30 * 60 * 1000;
 
-export type Attribution = Partial<Record<(typeof PARAMS)[number], string>> & {
+export type Attribution = Partial<Record<(typeof PARAMETROS_CAMPANHA)[number], string>> & {
   landing?: string;
   referrer?: string;
   ts?: number;
@@ -49,7 +56,7 @@ export function captureAttribution(): Attribution {
   const store = safeStorage("local");
   const url = new URL(window.location.href);
   const fromUrl: Attribution = {};
-  for (const key of PARAMS) {
+  for (const key of PARAMETROS_CAMPANHA) {
     const value = url.searchParams.get(key);
     if (value) fromUrl[key] = value.slice(0, 200);
   }
@@ -96,38 +103,81 @@ export function getCodigo(): string {
   return code;
 }
 
-function newEventId() {
+function novoId() {
   return typeof crypto.randomUUID === "function"
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-const META_STANDARD: Partial<Record<EventName, string>> = {
-  page_view: "PageView",
-  whatsapp_click: "Contact",
-};
+type Sessao = { id: string; ultimo: number; novo: boolean };
+let memorySessao: Sessao | null = null;
+
+/** Sessão = visita. 30 minutos sem atividade abre outra. `novo`: primeira visita deste aparelho. */
+function getSessao(): Sessao {
+  const store = safeStorage("session");
+  const local = safeStorage("local");
+  let sessao: Sessao | null = memorySessao;
+  try {
+    const raw = store?.getItem(SESSAO_KEY);
+    if (raw) sessao = JSON.parse(raw) as Sessao;
+  } catch {
+    sessao = null;
+  }
+  const agora = Date.now();
+  if (!sessao || agora - sessao.ultimo > SESSAO_OCIOSA_MS) {
+    const primeira = local?.getItem(PRIMEIRA_KEY);
+    if (!primeira) local?.setItem(PRIMEIRA_KEY, String(agora));
+    sessao = { id: novoId(), ultimo: agora, novo: !primeira };
+  }
+  sessao.ultimo = agora;
+  memorySessao = sessao;
+  store?.setItem(SESSAO_KEY, JSON.stringify(sessao));
+  return sessao;
+}
+
+export function aparelhoInterno(): boolean {
+  return safeStorage("local")?.getItem(INTERNO_KEY) === "1";
+}
+
+/** Referência externa da página atual (busca, Instagram, WhatsApp…); vazia para navegação interna. */
+function referenciaExterna(): string | undefined {
+  if (!document.referrer) return undefined;
+  try {
+    const ref = new URL(document.referrer);
+    return ref.host === window.location.host ? undefined : ref.host.slice(0, 200);
+  } catch {
+    return undefined;
+  }
+}
 
 export function track(event: EventName, props: Record<string, string | number | boolean | undefined> = {}) {
-  if (typeof window === "undefined") return;
-  const eventId = newEventId();
+  if (typeof window === "undefined" || aparelhoInterno()) return;
+  const eventId = novoId();
   const attribution = getAttribution();
+  const sessao = getSessao();
   const payload = {
     event,
     eventId,
     props,
     attribution,
     codigo: getCodigo(),
+    sessao: sessao.id,
+    novo: sessao.novo,
+    ref: event === "page_view" ? referenciaExterna() : undefined,
     url: window.location.href,
     ts: Date.now(),
   };
 
   (window.dataLayer ??= []).push({ event, event_id: eventId, ...props, ...attribution });
 
-  // Se o Pixel ainda não carregou, a chamada fica na fila e ele a reproduz ao iniciar (ver MetaPixel).
-  const standard = META_STANDARD[event];
-  const args = standard ? ["track", standard, props, { eventID: eventId }] : ["trackCustom", event, props, { eventID: eventId }];
-  if (typeof window.fbq === "function") window.fbq(...args);
-  else (window.__jvFbq ??= []).push(args);
+  // Só os eventos combinados vão para a Meta. Se o Pixel ainda não carregou, a chamada fica na
+  // fila e ele a reproduz ao iniciar (ver MetaPixel).
+  const meta = EVENTO_META[event];
+  if (meta) {
+    const args = meta.padrao ? ["track", meta.nome, props, { eventID: eventId }] : ["trackCustom", meta.nome, props, { eventID: eventId }];
+    if (typeof window.fbq === "function") window.fbq(...args);
+    else (window.__jvFbq ??= []).push(args);
+  }
 
   try {
     const body = JSON.stringify(payload);

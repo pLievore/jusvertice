@@ -19,6 +19,7 @@ import { useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import type { ConteudoComparador, ConteudoCusto, Pagina } from "@/content/tipos";
+import { track } from "@/lib/tracking";
 import { CheckIcon, XIcon } from "../icons";
 import { CabecalhoSecao, comDestaque } from "../Marcos";
 
@@ -41,6 +42,15 @@ function Comparador({ antesDepois }: { antesDepois: ConteudoComparador }) {
   const caixaRef = useRef<HTMLDivElement>(null);
   const arrastando = useRef(false);
   const mexeu = useRef(false);
+  const usou = useRef(false);
+
+  // A pessoa assumiu o divisor: para a animação e registra o primeiro uso (uma vez por página).
+  const assumir = (meio: "arrasto" | "teclado") => {
+    mexeu.current = true;
+    if (usou.current) return;
+    usou.current = true;
+    track("comparador_usado", { meio });
+  };
 
   const moverPara = useCallback((clientX: number) => {
     const r = caixaRef.current?.getBoundingClientRect();
@@ -106,7 +116,7 @@ function Comparador({ antesDepois }: { antesDepois: ConteudoComparador }) {
             style={{ aspectRatio: proporcao }}
             onPointerDown={(e) => {
               arrastando.current = true;
-              mexeu.current = true;
+              assumir("arrasto");
               e.currentTarget.setPointerCapture(e.pointerId);
               moverPara(e.clientX);
             }}
@@ -198,11 +208,11 @@ function Comparador({ antesDepois }: { antesDepois: ConteudoComparador }) {
                   const passos: Record<string, number> = { ArrowLeft: -5, ArrowRight: 5, ArrowDown: -5, ArrowUp: 5 };
                   if (e.key in passos) {
                     e.preventDefault();
-                    mexeu.current = true;
+                    assumir("teclado");
                     setPos((p) => limitar(p + passos[e.key]));
                   } else if (e.key === "Home" || e.key === "End") {
                     e.preventDefault();
-                    mexeu.current = true;
+                    assumir("teclado");
                     setPos(e.key === "Home" ? 0 : 100);
                   }
                 }}
@@ -294,7 +304,7 @@ function OQueMuda({ custo, nivel }: { custo: ConteudoCusto; nivel: 3 | 4 }) {
 export function AntesDepois({ pagina }: { pagina: Pagina }) {
   const { comparador, custo } = pagina;
   return (
-    <section aria-labelledby="antes-depois-titulo" className="bg-surface py-24 md:py-32">
+    <section aria-labelledby="antes-depois-titulo" data-secao="comparador" className="bg-surface py-24 md:py-32">
       <div className="container-x">
         {comparador ? (
           <>

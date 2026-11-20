@@ -41,20 +41,27 @@ export async function SiteFooter({ origem }: { origem: Origem }) {
               {/* Telefones e e-mail aparecem quando forem preenchidos em site.ts */}
               {empresa.telefones.map((tel) => (
                 <li key={tel}>
-                  <a href={`tel:+55${soDigitos(tel)}`} className="link-quiet text-stage-foreground">
+                  <a href={`tel:+55${soDigitos(tel)}`} className="link-quiet text-stage-foreground" data-track="contato_click" data-track-canal="telefone">
                     {tel}
                   </a>
                 </li>
               ))}
               {empresa.email && (
                 <li>
-                  <a href={`mailto:${empresa.email}`} className="link-quiet text-stage-foreground">
+                  <a href={`mailto:${empresa.email}`} className="link-quiet text-stage-foreground" data-track="contato_click" data-track-canal="email">
                     {empresa.email}
                   </a>
                 </li>
               )}
               <li>
-                <a href={empresa.instagram} target="_blank" rel="noopener noreferrer" className="link-quiet text-stage-foreground">
+                <a
+                  href={empresa.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-quiet text-stage-foreground"
+                  data-track="contato_click"
+                  data-track-canal="instagram"
+                >
                   Instagram {empresa.instagramHandle}
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>

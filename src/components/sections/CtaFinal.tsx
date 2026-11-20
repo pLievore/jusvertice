@@ -18,7 +18,7 @@ export function CtaFinal({ pagina }: { pagina: Pagina }) {
   const giro = useTransform(scrollYProgress, [0, 1], [-14, 10]);
 
   return (
-    <section ref={ref} id="cta-final" aria-labelledby="cta-final-titulo" className="on-stage relative overflow-hidden">
+    <section ref={ref} id="cta-final" aria-labelledby="cta-final-titulo" data-secao="cta-final" className="on-stage relative overflow-hidden">
       <motion.div aria-hidden="true" className="absolute -inset-y-[10%] inset-x-0 will-change-transform" style={reduce ? undefined : { y }}>
         <Image src={ctaFinal.imagem ?? midia.ctaFinal} alt="" fill sizes="100vw" quality={88} placeholder="blur" className="object-cover" />
       </motion.div>

@@ -135,7 +135,7 @@ export function Situacoes({ pagina }: { pagina: Pagina }) {
 
   if (reduce || !desktop) {
     return (
-      <section ref={ref} aria-labelledby="situacoes-titulo" className="py-24">
+      <section ref={ref} aria-labelledby="situacoes-titulo" data-secao="situacoes" className="py-24">
         <div className="container-x">
           <div data-reveal>
             <Cabecalho situacoes={situacoes} />
@@ -156,6 +156,7 @@ export function Situacoes({ pagina }: { pagina: Pagina }) {
     <section
       ref={ref}
       aria-labelledby="situacoes-titulo"
+      data-secao="situacoes"
       className="relative"
       style={{ height: `${total * TELA_POR_ITEM_VH + 40}vh` }}
     >

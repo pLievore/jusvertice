@@ -18,7 +18,7 @@ export function ComoFunciona({ pagina }: { pagina: Pagina }) {
   const linha = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section id="como-funciona" aria-labelledby="como-titulo" className="relative py-24 md:py-32">
+    <section id="como-funciona" aria-labelledby="como-titulo" data-secao="como-funciona" className="relative py-24 md:py-32">
       <div className="container-x">
         <CabecalhoSecao id="como-titulo" rotulo={comoFunciona.eyebrow} titulo={comoFunciona.titulo} />
 

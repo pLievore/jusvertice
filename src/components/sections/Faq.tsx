@@ -15,7 +15,7 @@ export function Faq({ pagina, itens }: { pagina: Pagina; itens: Item[] }) {
   const base = useId();
 
   return (
-    <section id="duvidas" aria-labelledby="faq-titulo" className="bg-surface py-24 md:py-32">
+    <section id="duvidas" aria-labelledby="faq-titulo" data-secao="duvidas" className="bg-surface py-24 md:py-32">
       <div className="container-x grid gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <CabecalhoSecao id="faq-titulo" rotulo={faq.eyebrow} titulo={faq.titulo} />

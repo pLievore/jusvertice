@@ -264,7 +264,7 @@ export function Hero({ pagina }: { pagina: Pagina }) {
               <WhatsAppLink id="cta-topo" origem={pagina.origens.topo} arrow className="btn btn-primary">
                 {hero.cta}
               </WhatsAppLink>
-              <a href="#checklist" className="btn btn-ghost">
+              <a href="#checklist" className="btn btn-ghost" data-track="autodiagnostico_click">
                 {hero.ctaSecundario}
               </a>
             </div>

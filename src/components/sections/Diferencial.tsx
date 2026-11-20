@@ -8,7 +8,7 @@ import { Arco, CabecalhoSecao } from "../Marcos";
 export function Diferencial({ pagina }: { pagina: Pagina }) {
   const diferencial = pagina.diferencial;
   return (
-    <section aria-labelledby="diferencial-titulo" className="on-stage relative overflow-hidden py-24 md:py-32">
+    <section aria-labelledby="diferencial-titulo" data-secao="equipe" className="on-stage relative overflow-hidden py-24 md:py-32">
       <div className="container-x grid gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-20">
         <div>
           <CabecalhoSecao id="diferencial-titulo" rotulo={diferencial.eyebrow} titulo={diferencial.titulo} tituloClassName="!max-w-[14ch]" />

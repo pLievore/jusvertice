@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
-import { MetaPixel } from "@/components/MetaPixel";
-import { SmoothScroll } from "@/components/SmoothScroll";
 import { empresa } from "@/content/site";
 import "./globals.css";
 
@@ -48,20 +46,11 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+/** Só a estrutura e as fontes. O site, (site)/layout.tsx, e o painel, admin/layout.tsx, montam o resto. */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${display.variable} ${sans.variable}`}>
-      <body>
-        <a
-          href="#conteudo"
-          className="sr-only-focusable fixed left-4 top-4 z-[60] rounded-full bg-gold px-5 py-3 font-semibold text-stage"
-        >
-          Pular para o conteúdo
-        </a>
-        {children}
-        <SmoothScroll />
-        <MetaPixel />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

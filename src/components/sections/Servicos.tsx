@@ -9,7 +9,7 @@ import { CabecalhoSecao, Vertice } from "../Marcos";
 export function Servicos({ pagina }: { pagina: Pagina }) {
   const servicos = pagina.capacidades;
   return (
-    <section id="servicos" aria-labelledby="servicos-titulo" className="py-24 md:py-32">
+    <section id="servicos" aria-labelledby="servicos-titulo" data-secao="servicos" className="py-24 md:py-32">
       <div className="container-x">
         <CabecalhoSecao id="servicos-titulo" rotulo={servicos.eyebrow} titulo={servicos.titulo} intro={servicos.intro} layout="lado" />
 
@@ -39,7 +39,12 @@ export function Servicos({ pagina }: { pagina: Pagina }) {
                   ))}
                 </ul>
                 {item.link && (
-                  <Link href={item.link.href} className="link-quiet mt-4 self-start">
+                  <Link
+                    href={item.link.href}
+                    className="link-quiet mt-4 self-start"
+                    data-track="navegacao_click"
+                    data-track-destino={item.link.href}
+                  >
                     {item.link.texto}
                     <ArrowRight size={17} className="seta" />
                   </Link>
