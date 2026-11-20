@@ -1,26 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Newsreader } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { MetaPixel } from "@/components/MetaPixel";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { empresa } from "@/content/site";
 import "./globals.css";
 
-const display = Newsreader({
-  variable: "--font-newsreader",
+// Barlow nasceu da sinalização de rodovia: letra de engenharia, e a versão condensada é a
+// mesma família dos títulos em caixa alta dos posts da marca. Não é variável: pesos explícitos.
+const display = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
   subsets: ["latin"],
-  style: ["normal", "italic"],
+  weight: ["500", "600"],
   display: "swap",
 });
 
-const sans = Geist({
-  variable: "--font-geist",
+const sans = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
 const titulo = "Regularização de imóveis em Maringá e Ponta Grossa | JusVértice";
 const descricao =
-  "Seu imóvel pode estar irregular sem você saber. Engenharia e consultoria jurídica para regularizar antes da venda, do financiamento ou da transferência. Diagnóstico pelo WhatsApp.";
+  "Georreferenciamento, topografia e regularização imobiliária em Maringá e Ponta Grossa, com engenharia e consultoria jurídica juntas. Diagnóstico pelo WhatsApp.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(empresa.url),
@@ -41,7 +44,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#071429",
+  themeColor: "#002448",
   colorScheme: "light",
 };
 
@@ -51,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <a
           href="#conteudo"
-          className="sr-only-focusable fixed left-4 top-4 z-[60] bg-gold px-5 py-3 font-medium text-stage"
+          className="sr-only-focusable fixed left-4 top-4 z-[60] rounded-full bg-gold px-5 py-3 font-semibold text-stage"
         >
           Pular para o conteúdo
         </a>

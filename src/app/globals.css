@@ -1,37 +1,43 @@
 @import "tailwindcss";
 
 /**
- * JusVértice — papel claro + palco azul-noite.
+ * JusVértice — a identidade dos posts da marca, levada para o site.
  *
- * O corpo é papel (leitura longa no celular). O palco escuro existe onde há
- * mídia (hero, CTA final, processo): ali a foto/vídeo noturno da marca lê como
- * luz saindo do escuro, sem emenda. Mesma lógica do Andre-Watch, na cor da marca.
+ * Azul da marca (#002448, o fundo dos posts) como palco; claro frio para leitura longa.
+ * Dourado só onde a marca usa: destaque de título, rótulo, botão que vende.
+ * Assinaturas próprias: o marco de vértice com linha tracejada (o "Vértice" do nome, igual às
+ * divisas desenhadas sobre foto aérea nos posts), o arco dourado e o recorte em arco nas fotos.
+ * Pares de cor validados em scripts/contrast.mjs.
  */
 @theme {
-  --color-background: #f7f5f0;
-  --color-foreground: #0e1a2e;
-  --color-muted: #5b6271;
-  --color-border: #e0dbd1;
-  --color-surface: #efebe3;
+  --color-background: #f3f5f8;
+  --color-foreground: #0a1f3f;
+  --color-muted: #4a5870;
+  --color-border: #d5dce6;
+  --color-surface: #e7ecf2;
+  --color-card: #ffffff;
 
-  /* Palco */
-  --color-stage: #071429;
-  --color-stage-2: #0b1d3a;
-  --color-stage-foreground: #f3f1ec;
-  --color-stage-muted: #a3abb9;
-  --color-stage-border: #1f2d47;
+  /* Palco: o azul da marca */
+  --color-stage: #002448;
+  --color-stage-2: #0a3262;
+  --color-stage-deep: #001a36;
+  --color-stage-foreground: #f4f2ec;
+  --color-stage-muted: #afbcd1;
+  --color-stage-border: #1d4272;
 
-  /* Ouro da marca. Texto dourado só no palco (contraste); no papel é filete/estado. */
-  --color-gold: #c9a45c;
-  --color-gold-light: #e2c88f;
-  --color-gold-ink: #7a5c22;
+  /* Dourado. Texto dourado no claro usa o tom de tinta (contraste). */
+  --color-gold: #cca85e;
+  --color-gold-light: #e3c680;
+  --color-gold-ink: #7e5f20;
 
-  --color-rust: #a4442a;
+  /* Problemas apontados no comparador e itens de "irregular" */
+  --color-alerta: #e26d52;
+  --color-alerta-ink: #b23a22;
 
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --font-display: var(--font-newsreader), "Times New Roman", Georgia, serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --font-display: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
 }
 
 :root {
@@ -70,8 +76,8 @@
   }
 
   ::selection {
-    background: var(--color-foreground);
-    color: var(--color-background);
+    background: var(--color-stage);
+    color: var(--color-gold-light);
   }
 
   :focus-visible {
@@ -95,6 +101,7 @@
     --color-muted: var(--color-stage-muted);
     --color-border: var(--color-stage-border);
     --color-surface: var(--color-stage-2);
+    --color-card: var(--color-stage-2);
     background: var(--color-stage);
     color: var(--color-stage-foreground);
   }
@@ -106,67 +113,126 @@
     padding-inline: var(--gutter);
   }
 
-  /* Legenda de catálogo: serifa itálica, caixa de frase. */
-  .eyebrow {
+  /* ── Tipografia ─────────────────────────────────────────────────────────── */
+
+  /* Títulos: condensada em caixa alta, como os posts. */
+  .titulo-hero,
+  .titulo,
+  .titulo-md {
     font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.0625rem;
-    letter-spacing: 0.005em;
-    color: var(--color-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-kerning: normal;
   }
 
-  .on-stage .eyebrow {
-    color: var(--color-gold-light);
-  }
-
-  .display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+  .titulo-hero {
+    font-size: clamp(2.75rem, 1rem + 6.4vw, 5.75rem);
+    line-height: 0.94;
+    letter-spacing: -0.005em;
   }
 
   .titulo {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(2.4rem, 1.4rem + 4.2vw, 5.25rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.25rem, 1.35rem + 3.6vw, 4.25rem);
+    line-height: 0.96;
+    letter-spacing: 0;
   }
 
   .titulo-md {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
-    line-height: 1.04;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.35rem);
+    line-height: 1;
+    letter-spacing: 0.005em;
+  }
+
+  .destaque {
+    color: var(--color-gold-ink);
+  }
+
+  .on-stage .destaque {
+    color: var(--color-gold);
+  }
+
+  /* Rótulo de seção: marco de vértice + texto + linha tracejada, como uma divisa. */
+  .rotulo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--color-gold-ink);
+  }
+
+  .on-stage .rotulo {
+    color: var(--color-gold);
+  }
+
+  .rotulo::after {
+    content: "";
+    flex: 0 1 4.5rem;
+    height: 1px;
+    background-image: linear-gradient(to right, currentColor 55%, transparent 0);
+    background-size: 7px 1px;
+    opacity: 0.7;
+  }
+
+  .tracejado {
+    background-image: linear-gradient(to right, currentColor 55%, transparent 0);
+    background-size: 8px 1px;
+    background-repeat: repeat-x;
+    background-position: left center;
+  }
+
+  .tracejado-v {
+    background-image: linear-gradient(to bottom, currentColor 55%, transparent 0);
+    background-size: 1px 8px;
+    background-repeat: repeat-y;
+    background-position: center top;
   }
 
   .meta {
-    font-size: 0.8125rem;
-    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
     font-variant-numeric: tabular-nums;
     color: var(--color-muted);
   }
 
-  /* Ações */
+  /* ── Fotos ──────────────────────────────────────────────────────────────── */
+
+  .foto {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* Recorte em arco (topo inteiro arredondado), como as molduras dos posts. */
+  .foto-arco {
+    border-radius: 999px 999px 1.25rem 1.25rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* ── Ações ──────────────────────────────────────────────────────────────── */
+
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
     min-height: 3.25rem;
-    padding: 0.9rem 1.6rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
+    padding: 0.55rem 1.6rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
     letter-spacing: 0.01em;
     line-height: 1.2;
     text-align: center;
     transition:
-      transform 300ms var(--ease-editorial),
       background-color 300ms var(--ease-editorial),
       color 300ms var(--ease-editorial),
-      border-color 300ms var(--ease-editorial);
+      border-color 300ms var(--ease-editorial),
+      transform 300ms var(--ease-editorial);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -174,17 +240,54 @@
     transform: scale(0.98);
   }
 
-  /* Primário = bloco de tinta no papel. */
-  .btn-primary {
-    background: var(--color-foreground);
-    color: var(--color-background);
+  /* Seta no círculo, como o botão dos posts. */
+  .btn:has(.seta) {
+    padding-right: 0.45rem;
   }
 
-  /* No palco o primário é o ouro da marca: é o botão que vende. */
+  .btn .seta {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 999px;
+    margin-left: 0.35rem;
+    transition: transform 400ms var(--ease-editorial);
+  }
+
+  @media (hover: hover) {
+    .btn:hover .seta {
+      transform: translateX(3px);
+    }
+  }
+
+  /* Primário no claro: o azul da marca, seta dourada. */
+  .btn-primary {
+    background: var(--color-stage);
+    color: #fff;
+  }
+
+  .btn-primary .seta {
+    background: var(--color-gold);
+    color: var(--color-stage);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-stage-2);
+  }
+
+  /* No palco o primário é o dourado: é o botão que vende. */
   .on-stage .btn-primary,
   .btn-gold {
     background: var(--color-gold);
     color: var(--color-stage);
+  }
+
+  .on-stage .btn-primary .seta,
+  .btn-gold .seta {
+    background: var(--color-stage);
+    color: var(--color-gold);
   }
 
   .on-stage .btn-primary:hover,
@@ -192,31 +295,17 @@
     background: var(--color-gold-light);
   }
 
-  @media (hover: hover) {
-    .btn-primary:hover {
-      transform: translateY(-2px);
-    }
-  }
-
   .btn-ghost {
-    border: 1px solid var(--color-border);
+    border: 1.5px solid color-mix(in srgb, currentColor 32%, transparent);
     color: var(--color-foreground);
   }
 
-  .on-stage .btn-ghost {
-    border-color: rgb(243 241 236 / 0.35);
-  }
-
   .btn-ghost:hover {
-    border-color: var(--color-foreground);
+    border-color: currentColor;
   }
 
-  .btn .seta {
-    transition: transform 300ms var(--ease-editorial);
-  }
-
-  .btn:hover .seta {
-    transform: translateX(4px);
+  .btn-ghost .seta {
+    background: color-mix(in srgb, currentColor 10%, transparent);
   }
 
   .link-quiet {
@@ -224,10 +313,11 @@
     align-items: center;
     gap: 0.5rem;
     min-height: 2.75rem;
+    font-weight: 600;
     text-decoration-line: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.35em;
-    text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
     transition: text-decoration-color 300ms var(--ease-editorial);
   }
 
@@ -235,31 +325,40 @@
     text-decoration-color: currentColor;
   }
 
-  /* Checklist: linhas de catálogo com fio de cabelo */
+  .link-quiet .seta {
+    transition: transform 400ms var(--ease-editorial);
+  }
+
+  .link-quiet:hover .seta {
+    transform: translateX(3px);
+  }
+
+  /* ── Checklist ──────────────────────────────────────────────────────────── */
+
   .check-row {
     display: flex;
     align-items: center;
-    gap: 1.1rem;
-    min-height: 4.25rem;
-    padding-block: 1rem;
+    gap: 1rem;
+    min-height: 4rem;
+    padding-block: 0.9rem;
     border-top: 1px solid var(--color-border);
     cursor: pointer;
-    transition: color 300ms var(--ease-editorial);
   }
 
   .check-row:has(input:focus-visible) {
     outline: 2px solid var(--color-foreground);
     outline-offset: 4px;
+    border-radius: 0.5rem;
   }
 
   .check-box {
-    position: relative;
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1.5px solid #8a8f9c;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 0.4rem;
+    border: 1.5px solid var(--color-muted);
     transition:
       background-color 300ms var(--ease-editorial),
       border-color 300ms var(--ease-editorial);
@@ -274,9 +373,9 @@
   }
 
   .check-row:has(input:checked) .check-box {
-    background: var(--color-foreground);
-    border-color: var(--color-foreground);
-    color: var(--color-background);
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-stage);
   }
 
   .check-row:has(input:checked) .check-box svg {
@@ -284,7 +383,8 @@
     transform: none;
   }
 
-  /* FAQ */
+  /* ── FAQ ────────────────────────────────────────────────────────────────── */
+
   .faq-panel {
     display: grid;
     grid-template-rows: 0fr;
@@ -307,13 +407,14 @@
     overflow: hidden;
   }
 
-  /* Barra fixa de WhatsApp (celular) */
+  /* ── Barra fixa de WhatsApp (celular) ───────────────────────────────────── */
+
   .sticky-cta {
     position: fixed;
     z-index: 40;
     inset-inline: 0;
     bottom: 0;
-    padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom));
+    padding: 0.7rem var(--gutter) calc(0.7rem + env(safe-area-inset-bottom));
     background: var(--color-stage);
     border-top: 1px solid var(--color-stage-border);
     transition: transform 500ms var(--ease-editorial);
@@ -336,7 +437,9 @@
     border: 0;
   }
 
-  /* Entrada do hero: CSS puro, começa em 0.01 para o título contar como LCP. */
+  /* ── Entrada do hero ────────────────────────────────────────────────────── */
+
+  /* CSS puro, começa em 0.01 para o título contar como LCP na primeira pintura. */
   @keyframes entrar {
     from {
       opacity: 0.01;
@@ -344,43 +447,44 @@
     }
   }
 
+  /* Título sobe de trás de uma régua, linha a linha (cada frase é um bloco). */
   @keyframes entrar-titulo {
     from {
       opacity: 0.01;
-      transform: translateY(0.25em);
-      filter: blur(8px);
+      transform: translateY(0.45em);
     }
   }
 
   .entrar {
-    animation: entrar 1s var(--ease-editorial) both;
+    animation: entrar 0.9s var(--ease-editorial) both;
     animation-delay: calc(var(--d, 0) * 1ms);
   }
 
   .entrar-titulo {
-    animation: entrar-titulo 1.2s var(--ease-editorial) both;
+    animation: entrar-titulo 1s var(--ease-editorial) both;
     animation-delay: calc(var(--d, 0) * 1ms);
   }
 
-  /* Revelação ao rolar (o JS marca .reveal-ready; sem JS tudo aparece). */
+  /* ── Revelação ao rolar (o JS marca .reveal-ready; sem JS tudo aparece) ── */
+
   [data-reveal] {
     transition:
-      opacity 0.9s var(--ease-editorial),
-      transform 1s var(--ease-editorial),
-      clip-path 1.2s var(--ease-editorial);
-    transition-delay: calc(var(--i, 0) * 120ms);
+      opacity 0.8s var(--ease-editorial),
+      transform 0.9s var(--ease-editorial),
+      clip-path 1.1s var(--ease-editorial);
+    transition-delay: calc(var(--i, 0) * 110ms);
   }
 
   .reveal-ready [data-reveal]:not(.is-visible) {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(24px);
   }
 
   /* Fotos entram por cortina, com a imagem assentando por dentro. */
   .reveal-ready [data-reveal="foto"]:not(.is-visible) {
     opacity: 1;
     transform: none;
-    clip-path: inset(0 0 100% 0);
+    clip-path: inset(100% 0 0 0);
   }
 
   [data-reveal="foto"] {
@@ -388,15 +492,28 @@
   }
 
   [data-reveal="foto"] img {
-    transition: transform 1.6s var(--ease-editorial);
-    transition-delay: calc(var(--i, 0) * 120ms);
+    transition: transform 1.5s var(--ease-editorial);
+    transition-delay: calc(var(--i, 0) * 110ms);
   }
 
   .reveal-ready [data-reveal="foto"]:not(.is-visible) img {
-    transform: scale(1.12);
+    transform: scale(1.1);
   }
 
-  /* Comparador: grade de prancheta e apontamentos que se desenham na revelação */
+  /* A linha tracejada do rótulo se estende quando a seção chega. */
+  .reveal-ready [data-reveal] .rotulo::after,
+  .reveal-ready .rotulo[data-reveal]::after {
+    transform-origin: left;
+    transition: transform 1s var(--ease-editorial) 250ms;
+  }
+
+  .reveal-ready .rotulo[data-reveal]:not(.is-visible)::after,
+  .reveal-ready [data-reveal]:not(.is-visible) .rotulo::after {
+    transform: scaleX(0);
+  }
+
+  /* ── Comparador ─────────────────────────────────────────────────────────── */
+
   .planta-grade {
     background-image:
       linear-gradient(to right, rgb(233 238 246 / 0.07) 1px, transparent 1px),
@@ -405,7 +522,7 @@
   }
 
   .linha-apontamento {
-    stroke: #e88e6f;
+    stroke: var(--color-alerta);
     stroke-width: 0.14;
     stroke-linecap: round;
     stroke-dasharray: 1;
@@ -444,7 +561,7 @@
     position: absolute;
     inset: -5px;
     border-radius: 999px;
-    border: 1.5px solid #e88e6f;
+    border: 1.5px solid var(--color-alerta);
     animation: pulso-marcador 2.4s var(--ease-editorial) infinite;
   }
 
@@ -459,26 +576,7 @@
     }
   }
 
-  @keyframes pulso-rolagem {
-    0%,
-    100% {
-      transform: scaleY(0.35);
-      transform-origin: top;
-      opacity: 0.5;
-    }
-    50% {
-      transform: scaleY(1);
-      transform-origin: top;
-      opacity: 1;
-    }
-  }
-
-  .pulso-rolagem {
-    animation: pulso-rolagem 2.4s var(--ease-editorial) infinite;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .pulso-rolagem,
     .marcador::after,
     .entrar,
     .entrar-titulo {
@@ -488,7 +586,8 @@
     [data-reveal="foto"] img,
     .linha-apontamento,
     .marcador,
-    .etiqueta {
+    .etiqueta,
+    .rotulo::after {
       transition: none;
     }
     .reveal-ready [data-reveal]:not(.is-visible) {
@@ -496,10 +595,13 @@
       transform: none;
       clip-path: none;
     }
-    .reveal-ready [data-reveal="foto"]:not(.is-visible) img {
+    .reveal-ready [data-reveal="foto"]:not(.is-visible) img,
+    .reveal-ready .rotulo[data-reveal]:not(.is-visible)::after,
+    .reveal-ready [data-reveal]:not(.is-visible) .rotulo::after {
       transform: none;
     }
     .btn,
+    .btn .seta,
     .check-box,
     .check-box svg,
     .faq-panel,

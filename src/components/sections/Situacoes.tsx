@@ -12,6 +12,7 @@ import { cubicBezier, motion, type MotionValue, useReducedMotion, useScroll, use
 import Image from "next/image";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import type { ConteudoSituacoes, Pagina } from "@/content/tipos";
+import { Rotulo, Vertice } from "../Marcos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
 type Item = ConteudoSituacoes["itens"][number];
@@ -20,28 +21,25 @@ const TELA_POR_ITEM_VH = 90;
 const CHEGA = cubicBezier(0.22, 1, 0.36, 1);
 const SAI = cubicBezier(0.5, 0, 0.75, 0);
 
-function Conteudo({ item, i, total, cta }: { item: Item; i: number; total: number; cta: string }) {
+function Conteudo({ item, cta }: { item: Item; cta: string }) {
   return (
-    <div className="mx-auto grid w-full max-w-6xl items-center gap-8 md:grid-cols-2 md:gap-16">
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-stage">
+    <div className="mx-auto grid w-full max-w-6xl items-center gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:gap-16">
+      <div className="foto relative aspect-[16/10] w-full bg-stage">
         <Image
           src={item.imagem}
           alt={item.alt}
           fill
-          sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 100vw"
+          sizes="(min-width: 1280px) 620px, (min-width: 768px) 50vw, 100vw"
           quality={88}
           placeholder="blur"
           className="object-cover"
           draggable={false}
         />
       </div>
-      <div className="flex flex-col gap-5">
-        <span className="meta">
-          {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        <h3 className="display text-[clamp(2.1rem,1.2rem+3.4vw,4rem)] leading-[1.02]">{item.titulo}</h3>
+      <div className="flex flex-col items-start gap-5">
+        <h3 className="titulo text-[clamp(2rem,1.3rem+2.4vw,3.25rem)]">{item.titulo}</h3>
         <p className="max-w-md text-muted md:text-lg">{item.texto}</p>
-        <WhatsAppLink origem={item.origem} arrow className="link-quiet self-start">
+        <WhatsAppLink origem={item.origem} arrow className="btn btn-ghost mt-2">
           {cta}
         </WhatsAppLink>
       </div>
@@ -81,23 +79,29 @@ function Slide({
       onFocusCapture={aoFocar}
       className="absolute inset-0 flex items-center px-[var(--gutter)] will-change-transform"
     >
-      <Conteudo item={item} i={i} total={total} cta={cta} />
+      <Conteudo item={item} cta={cta} />
     </motion.div>
   );
 }
 
-function Tique({ i, total, progresso }: { i: number; total: number; progresso: MotionValue<number> }) {
+/** Progresso como uma poligonal: um marco por situação, ligados por tracejado. */
+function Marco({ i, total, progresso }: { i: number; total: number; progresso: MotionValue<number> }) {
   const seg = 1 / total;
   const c = (i + 0.5) * seg;
-  const opacity = useTransform(progresso, [c - seg / 2, c, c + seg / 2], [0.3, 1, 0.3]);
-  const scaleX = useTransform(progresso, [c - seg / 2, c, c + seg / 2], [1, 2.4, 1]);
-  return <motion.span className="block h-px w-6 origin-left bg-foreground" style={{ opacity, scaleX }} />;
+  const pontos = [Math.max(0, c - seg / 2), c, Math.min(1, c + seg / 2)];
+  const opacity = useTransform(progresso, pontos, [0.35, 1, 0.35]);
+  const scale = useTransform(progresso, pontos, [0.8, 1.15, 0.8]);
+  return (
+    <motion.span className="block text-gold-ink" style={{ opacity, scale }}>
+      <Vertice size={16} />
+    </motion.span>
+  );
 }
 
 function Cabecalho({ situacoes }: { situacoes: ConteudoSituacoes }) {
   return (
     <div>
-      <p className="eyebrow">{situacoes.eyebrow}</p>
+      <Rotulo reveal={false}>{situacoes.eyebrow}</Rotulo>
       <h2 id="situacoes-titulo" className="titulo mt-5">
         {situacoes.titulo}
       </h2>
@@ -131,15 +135,15 @@ export function Situacoes({ pagina }: { pagina: Pagina }) {
 
   if (reduce || !desktop) {
     return (
-      <section ref={ref} aria-labelledby="situacoes-titulo" className="border-t border-border py-24">
+      <section ref={ref} aria-labelledby="situacoes-titulo" className="py-24">
         <div className="container-x">
           <div data-reveal>
             <Cabecalho situacoes={situacoes} />
           </div>
           <ul className="mt-14 grid gap-16">
-            {situacoes.itens.map((item, i) => (
+            {situacoes.itens.map((item) => (
               <li key={item.origem} data-reveal style={{ "--i": 0 } as CSSProperties}>
-                <Conteudo item={item} i={i} total={total} cta={situacoes.cta} />
+                <Conteudo item={item} cta={situacoes.cta} />
               </li>
             ))}
           </ul>
@@ -152,15 +156,18 @@ export function Situacoes({ pagina }: { pagina: Pagina }) {
     <section
       ref={ref}
       aria-labelledby="situacoes-titulo"
-      className="relative border-t border-border"
+      className="relative"
       style={{ height: `${total * TELA_POR_ITEM_VH + 40}vh` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-28">
         <div className="container-x flex items-end justify-between gap-8">
           <Cabecalho situacoes={situacoes} />
-          <div aria-hidden="true" className="flex gap-2 pb-4">
+          <div aria-hidden="true" className="relative flex items-center gap-5 pb-4">
+            <span className="tracejado absolute inset-x-2 top-[calc(50%_-_0.5rem)] h-px text-border" />
             {situacoes.itens.map((item, i) => (
-              <Tique key={item.origem} i={i} total={total} progresso={scrollYProgress} />
+              <span key={item.origem} className="relative bg-background">
+                <Marco i={i} total={total} progresso={scrollYProgress} />
+              </span>
             ))}
           </div>
         </div>

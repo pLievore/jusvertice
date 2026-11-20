@@ -40,7 +40,11 @@ export function WhatsAppLink({ origem, children, className = "", extra, icon = t
       {icon && <WhatsAppIcon size={20} className="shrink-0" />}
       <span>{children}</span>
       <span className="sr-only"> (abre o WhatsApp em nova aba)</span>
-      {arrow && <ArrowRight size={18} className="seta shrink-0" />}
+      {arrow && (
+        <span className="seta" aria-hidden="true">
+          <ArrowRight size={17} />
+        </span>
+      )}
     </a>
   );
 }

@@ -14,10 +14,15 @@ export function imagemCompartilhamento(titulo: string, linha: string) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "radial-gradient(circle at 85% 10%, rgba(214,178,106,0.28), transparent 55%), #071631",
-          color: "#EEF1F5",
+          background: "#002448",
+          color: "#F4F2EC",
+          position: "relative",
         }}
       >
+        {/* Arco dourado da marca */}
+        <svg width="460" height="460" viewBox="0 0 200 200" style={{ position: "absolute", right: -90, bottom: -150 }}>
+          <path d="M12 200A188 188 0 0 1 200 12" fill="none" stroke="#CCA85E" strokeWidth="14" />
+        </svg>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <svg width="74" height="78" viewBox="0 0 200 210">
             <path
@@ -29,13 +34,15 @@ export function imagemCompartilhamento(titulo: string, linha: string) {
             <path fill="#C9CED6" d="M76 90H101L125 156 172 82H198L125 200Z" />
           </svg>
           <div style={{ display: "flex", fontSize: 40 }}>
-            <span style={{ color: "#D6B26A" }}>Jus</span>
-            <span style={{ color: "#C9CED6" }}>Vértice</span>
+            <span style={{ color: "#CCA85E" }}>Jus</span>
+            <span style={{ color: "#F4F2EC", fontWeight: 700 }}>Vértice</span>
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div style={{ fontSize: 76, lineHeight: 1.04, letterSpacing: -2, maxWidth: 960 }}>{titulo}</div>
-          <div style={{ fontSize: 30, color: "#A9B4C6" }}>{linha}</div>
+          <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.02, letterSpacing: -1, maxWidth: 940, textTransform: "uppercase" }}>
+            {titulo}
+          </div>
+          <div style={{ fontSize: 30, color: "#AFBCD1" }}>{linha}</div>
         </div>
       </div>
     ),

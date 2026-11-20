@@ -49,14 +49,14 @@ test("situações fixadas (desktop): focar o link de um slide leva a rolagem at�
   expect(visivel).toBe(true);
 });
 
-test("header nasce no palco e vira papel depois do hero", async ({ page }) => {
+test("header nasce transparente sobre o hero e vira claro depois dele", async ({ page }) => {
   await page.goto("/");
   await waitHydrated(page);
   const fundo = () => page.locator("header").evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(await fundo()).toMatch(/rgba\(7, 20, 41, 0\)|rgba\(0, 0, 0, 0\)/);
+  expect(await fundo()).toMatch(/rgba\(0, 36, 72, 0\)|rgba\(0, 0, 0, 0\)/);
   await page.locator("#checklist").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
-  expect(await fundo()).toMatch(/rgba\(247, 245, 240/);
+  expect(await fundo()).toMatch(/rgba\(243, 245, 248/);
 });
 
 test("comparador: os 4 apontamentos existem em texto (legenda) e na imagem", async ({ page }) => {

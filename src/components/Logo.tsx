@@ -50,10 +50,12 @@ export function Monogram({
   );
 }
 
+/** "Jus" leve e "Vértice" firme: a mesma leitura do logotipo dos posts. */
 export function Wordmark({ className = "" }: { className?: string }) {
   return (
-    <span className={`text-[1.0625rem] tracking-[0.01em] ${className}`}>
-      Jus<span aria-hidden="true" className="opacity-70">·</span>Vértice
+    <span className={`font-display text-[1.45rem] leading-none tracking-[0.01em] ${className}`}>
+      <span className="font-medium opacity-80">Jus</span>
+      <span className="font-semibold">Vértice</span>
     </span>
   );
 }

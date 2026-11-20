@@ -1,6 +1,7 @@
 # JusVértice — landing de regularização imobiliária
 
-Landing de captação (Next.js 16 + Tailwind 4 + Motion + Lenis) construída a partir de `jusvertice-plano-site.md`, no padrão visual do Andre-Watch e da DG Pinturas.
+Landing de captação (Next.js 16 + Tailwind 4 + Motion + Lenis) construída a partir de `jusvertice-plano-site.md`.
+A identidade visual sai dos posts da marca: azul `#002448` e dourado `#CCA85E`, títulos em Barlow Condensed caixa alta, texto em Barlow, e o marco de vértice com linha tracejada como assinatura (tokens e regras em `src/app/globals.css`, peças em `src/components/Marcos.tsx`).
 Todos os botões levam ao WhatsApp com mensagem pré-preenchida por origem, e a página instrumenta os estágios do funil.
 
 ## Rodar
@@ -27,7 +28,7 @@ As duas usam os mesmos componentes (`src/components/PaginaLanding.tsx`) com cont
 | Todo o texto, WhatsApp, CREA/RN, e-mail e telefones, regiões, modo do diagnóstico | `src/content/site.ts` |
 | Mensagem de cada botão (por origem) | `src/content/origens.ts` |
 | Diagnóstico gratuito / neutro / cobrado | `diagnostico.modo` em `src/content/site.ts` |
-| Seções da página | `src/components/sections/*` (ordem em `src/app/page.tsx`) |
+| Seções da página | `src/components/sections/*` (ordem em `src/components/PaginaLanding.tsx`) |
 | Cores, tipografia e animações em CSS | `src/app/globals.css` |
 | Mídia (imagens e vídeo do hero) | `public/midia/` · prompts em `docs/midia-prompts.md` |
 | Eventos do funil (cliente) | `src/lib/tracking.ts` |
@@ -46,7 +47,7 @@ node scripts/montar-hero.mjs midia-fonte/hero.mp4    # vídeo: quadros do deskto
 npm run build
 ```
 
-No desktop o vídeo avança com a rolagem (as luzes da casa acendem conforme a pessoa desce); no celular toca uma vez e para com a casa acesa. Movimento reduzido mostra o quadro final, parado. Prompts das peças em `docs/midia-prompts.md`.
+No desktop o vídeo avança com a rolagem (o dia nasce sobre o campo conforme a pessoa desce); no celular toca uma vez e para no último quadro. Movimento reduzido mostra o quadro final, parado. Prompts das peças em `docs/midia-prompts.md`.
 
 ## Medição
 

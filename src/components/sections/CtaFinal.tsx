@@ -5,14 +5,17 @@ import Image from "next/image";
 import { type CSSProperties, useRef } from "react";
 import { microcopyDiagnostico, midia } from "@/content/site";
 import type { Pagina } from "@/content/tipos";
+import { Arco, comDestaque, Rotulo } from "../Marcos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
+/** Fechamento com a frase da marca ("Da irregularidade à tranquilidade"), sobre a foto noturna. */
 export function CtaFinal({ pagina }: { pagina: Pagina }) {
   const ctaFinal = pagina.ctaFinal;
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const giro = useTransform(scrollYProgress, [0, 1], [-14, 10]);
 
   return (
     <section ref={ref} id="cta-final" aria-labelledby="cta-final-titulo" className="on-stage relative overflow-hidden">
@@ -22,21 +25,34 @@ export function CtaFinal({ pagina }: { pagina: Pagina }) {
       <div
         aria-hidden="true"
         className="absolute inset-0"
-        style={{ background: "linear-gradient(to top, rgba(7,20,41,0.96) 15%, rgba(7,20,41,0.7) 55%, rgba(7,20,41,0.55) 100%)" }}
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,36,72,0.97) 12%, rgba(0,36,72,0.72) 52%, rgba(0,36,72,0.5) 100%), linear-gradient(90deg, rgba(0,36,72,0.6), transparent 70%)",
+        }}
       />
+      {/* Arco dourado, girando devagar com a rolagem */}
+      <motion.div
+        aria-hidden="true"
+        // Celular: no alto, longe do texto (que fica embaixo). Desktop: saindo pelo canto inferior.
+        className="absolute -right-[14%] top-[3%] w-[40vw] text-gold opacity-90 sm:-bottom-[18%] sm:-right-[12%] sm:top-auto sm:w-[min(70vw,40rem)]"
+        style={reduce ? undefined : { rotate: giro }}
+      >
+        <Arco className="w-full" />
+      </motion.div>
 
-      <div className="container-x relative flex min-h-[85svh] flex-col justify-end py-24 md:py-32">
-        <p className="eyebrow" data-reveal>
-          {ctaFinal.eyebrow}
-        </p>
-        <h2 id="cta-final-titulo" className="display mt-5 max-w-[16ch] text-[clamp(2.6rem,1.3rem+5.4vw,6rem)]" data-reveal style={{ "--i": 1 } as CSSProperties}>
-          {ctaFinal.titulo}
+      <div className="container-x relative flex min-h-[80svh] flex-col justify-end py-24 md:py-32">
+        <Rotulo>{ctaFinal.eyebrow}</Rotulo>
+        <h2 id="cta-final-titulo" className="titulo-hero mt-5 max-w-[18ch]" data-reveal style={{ "--i": 1 } as CSSProperties}>
+          {comDestaque(ctaFinal.titulo, ctaFinal.destaque, true)}
         </h2>
-        <div className="mt-10" data-reveal style={{ "--i": 2 } as CSSProperties}>
-          <WhatsAppLink origem={pagina.origens.rodape} arrow className="btn btn-primary">
+        <p className="mt-6 max-w-[34rem] text-stage-muted md:text-lg" data-reveal style={{ "--i": 2 } as CSSProperties}>
+          {ctaFinal.texto}
+        </p>
+        <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6" data-reveal style={{ "--i": 3 } as CSSProperties}>
+          <WhatsAppLink origem={pagina.origens.rodape} arrow className="btn btn-primary self-start">
             {ctaFinal.cta}
           </WhatsAppLink>
-          <p className="meta mt-4">{microcopyDiagnostico()}</p>
+          <p className="meta">{microcopyDiagnostico()}</p>
         </div>
       </div>
     </section>

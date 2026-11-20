@@ -25,7 +25,7 @@ export const empresa = {
   nome: "JusVértice",
   razaoSocial: "JusVértice Engenharia", // PENDENTE: confirmar razão social
   url: "https://jusvertice.com.br", // PENDENTE: domínio
-  whatsapp: "5544900000000", // PENDENTE: número real (hoje a bio usa w.app/contato_jusvertice)
+  whatsapp: "5544991498279",
   instagram: "https://www.instagram.com/jusvertice/",
   instagramHandle: "@jusvertice",
   cidade: "Maringá",
@@ -36,9 +36,9 @@ export const empresa = {
   // CNPJ e OAB fora do site por enquanto (pedido da Gabi).
   crea: "CREA-PR 196465/D",
   rn: "RN 10337367914",
-  // PENDENTE: o bloco de contato do rodapé só aparece quando estes campos forem preenchidos.
+  // PENDENTE: e-mail. O rodapé só mostra o que estiver preenchido.
   email: "",
-  telefones: [] as string[], // ex.: "(44) 99999-9999"
+  telefones: ["(44) 99149-8279"] as string[],
   geo: { lat: -23.4205, lng: -51.9333 },
 } as const;
 
@@ -54,9 +54,21 @@ export function microcopyDiagnostico(modo: DiagnosticoModo = diagnostico.modo) {
     case "gratuito":
       return "Diagnóstico gratuito pelo WhatsApp, sem compromisso.";
     case "cobrado":
-      return `Diagnóstico de ${diagnostico.precoCobrado}, descontado do serviço se você seguir com a gente.`;
+      return `Diagnóstico de ${diagnostico.precoCobrado}, descontado do serviço se você fechar conosco.`;
     default:
       return "Atendimento pelo WhatsApp, sem compromisso.";
+  }
+}
+
+/** Versão curta, para a faixa de credenciais do hero. */
+export function seloDiagnostico(modo: DiagnosticoModo = diagnostico.modo) {
+  switch (modo) {
+    case "gratuito":
+      return "Diagnóstico gratuito pelo WhatsApp";
+    case "cobrado":
+      return `Diagnóstico de ${diagnostico.precoCobrado}`;
+    default:
+      return "Atendimento pelo WhatsApp";
   }
 }
 
@@ -84,27 +96,28 @@ export const midia = {
 };
 
 export const hero = {
-  eyebrow: "Engenharia e consultoria jurídica · Maringá e Ponta Grossa",
-  titulo: "Seu imóvel pode estar irregular sem você saber.",
+  eyebrow: "Maringá e Ponta Grossa · PR",
+  titulo: "Seu imóvel regularizado. Seu patrimônio protegido.",
+  destaque: "Seu patrimônio protegido.",
   subtitulo:
-    "Isso costuma aparecer na hora de vender, financiar ou transferir. Nós resolvemos toda a parte técnica e a burocracia: do georreferenciamento ao registro.",
-  cta: "Descobrir a situação do meu imóvel",
+    "Soluções em georreferenciamento, topografia e regularização imobiliária, com precisão técnica, segurança e responsabilidade em cada projeto.",
+  cta: "Falar com um especialista",
   ctaSecundario: "Fazer o autodiagnóstico",
-  ctaBarra: "Descobrir a situação do imóvel",
+  ctaBarra: "Falar com um especialista",
   posterAlt: "Receptor de georreferenciamento sobre um marco, à beira de um campo de soja, ao nascer do sol.",
 };
 
 export const checklist = {
   eyebrow: "Autodiagnóstico",
-  titulo: "Algum destes pontos acontece com o seu imóvel?",
-  intro: "Marque o que se aplica. Se não tiver certeza, marque também: o diagnóstico serve justamente para isso.",
+  titulo: "Seu imóvel tem algum destes sinais?",
+  intro: "Marque o que acontece com o seu imóvel. O que você marcar vai junto na mensagem, e o especialista já começa sabendo do caso.",
   itens: [
     { id: "documentacao", texto: "A documentação está desatualizada" },
     { id: "area", texto: "A área construída é diferente da registrada" },
     { id: "limites", texto: "Os limites do terreno não batem com os documentos" },
     { id: "construcao", texto: "Tem construção ou ampliação que não foi regularizada" },
   ],
-  fecho: "Não basta ter os documentos guardados. É preciso verificar se eles correspondem à realidade do imóvel.",
+  fecho: "Não basta ter os documentos guardados. É preciso conferir se eles correspondem ao imóvel.",
   cta: "Quero entender o meu caso",
 };
 
@@ -115,13 +128,13 @@ export const checklist = {
  */
 export const antesDepois = {
   eyebrow: "Arraste para comparar",
-  titulo: "O que o diagnóstico encontra num imóvel como o seu.",
-  intro: "De um lado, o que deveria constar no papel. Do outro, o imóvel depois de regularizado.",
+  titulo: "O que o diagnóstico encontra.",
+  intro: "À esquerda, o projeto com os pontos que costumam travar a venda e o financiamento. À direita, o mesmo imóvel depois de regularizado.",
   imagem: imgAntesDepois,
   planta: imgAntesDepoisPlanta,
   alt: "Fachada de uma casa moderna de dois pavimentos, com garagem anexa.",
   altPlanta: "A mesma fachada desenhada como projeto técnico, com os problemas apontados.",
-  antes: { rotulo: "No projeto" },
+  antes: { rotulo: "Projeto" },
   depois: { rotulo: "Regularizado" },
   problemas: [
     {
@@ -152,6 +165,8 @@ export const antesDepois = {
 };
 
 export const custo = {
+  eyebrow: "O que muda",
+  titulo: "A diferença aparece na hora de vender.",
   colunas: ["Imóvel irregular", "Imóvel regularizado"] as const,
   linhas: [
     ["Desvalorização", "Ganha valor de mercado"],
@@ -218,12 +233,12 @@ export const situacoes = {
       alt: "Receptor GNSS sobre tripé à beira de uma plantação, ao nascer do sol.",
     },
   ],
-  cta: "Falar sobre isso",
+  cta: "Falar sobre o meu caso",
 };
 
 export const comoFunciona = {
   eyebrow: "Como funciona",
-  titulo: "Três passos, e você decide com tudo na mesa.",
+  titulo: "Três passos. Você decide com tudo na mesa.",
   passos: [
     { titulo: "Você manda a matrícula", texto: "E conta o que está acontecendo. Tudo pelo WhatsApp." },
     { titulo: "Os especialistas analisam", texto: "Engenharia, agrimensura e consultoria jurídica." },
@@ -232,26 +247,32 @@ export const comoFunciona = {
   cta: "Começar meu diagnóstico",
 };
 
+/** Serviços. PENDENTE: confirmar os tópicos de cada frente com o Paulo Henrique. */
 export const capacidades = {
-  eyebrow: "Capacidade técnica",
-  titulo: "O que permite resolver de ponta a ponta.",
-  citacao: "Um terreno inclinado não é um problema. O problema é construir sem entender as características dele.",
+  eyebrow: "O que fazemos",
+  titulo: "Precisão técnica do campo ao cartório.",
+  intro:
+    "Cada caso passa pela engenharia e pela consultoria jurídica. Você não precisa contratar um profissional para medir e outro para registrar.",
   itens: [
     {
+      titulo: "Georreferenciamento",
+      texto: "Os limites do imóvel rural medidos com coordenadas precisas, certificados no INCRA e registrados na matrícula.",
+      topicos: ["Certificação no SIGEF", "Retificação de área", "Desmembramento e unificação"],
+      imagem: imgCapGeo,
+      alt: "Receptor GNSS sobre tripé à beira de uma plantação, ao nascer do sol.",
+      link: { href: "/georreferenciamento", texto: "Ver imóvel rural" },
+    },
+    {
       titulo: "Topografia",
-      texto: "Medidas, desníveis e limites reais do terreno, antes de comprar, construir ou corrigir a matrícula.",
+      texto: "Medidas, desníveis e divisas reais do terreno, antes de comprar, construir ou corrigir a matrícula.",
+      topicos: ["Levantamento planialtimétrico", "Demarcação de divisas", "Locação de obra"],
       imagem: imgCapTopo,
       alt: "Topógrafo operando uma estação total em um terreno de terra vermelha, com estacas marcando a divisa.",
     },
     {
-      titulo: "Georreferenciamento",
-      texto: "Exigência legal para registrar, desmembrar ou vender imóvel rural.",
-      imagem: imgCapGeo,
-      alt: "Receptor GNSS sobre tripé à beira de uma plantação, ao nascer do sol.",
-    },
-    {
-      titulo: "Projetos técnicos",
-      texto: "Projetos para aprovar na prefeitura e construir do jeito que vai ficar registrado.",
+      titulo: "Regularização imobiliária",
+      texto: "Construção que não consta na matrícula, compra sem escritura, herança parada. Resolvemos a parte técnica e a documental até o registro.",
+      topicos: ["Averbação de construção", "Escritura e registro", "Inventário e partilha"],
       imagem: imgCapProjetos,
       alt: "Plantas baixas, régua e laptop sobre a mesa de trabalho.",
     },
@@ -259,7 +280,7 @@ export const capacidades = {
 };
 
 export const faq = {
-  eyebrow: "Perguntas frequentes",
+  eyebrow: "Dúvidas frequentes",
   titulo: "Antes de começar.",
   itens: [
     {
@@ -296,21 +317,24 @@ export function perguntaDiagnostico(modo: DiagnosticoModo = diagnostico.modo) {
     return {
       pergunta: "O diagnóstico é gratuito mesmo?",
       resposta:
-        "Sim. Você manda a documentação, a gente analisa e diz o que precisa ser feito, quanto tempo leva e quanto custa. Você só segue se fizer sentido.",
+        "Sim. Você manda a documentação, nós analisamos e dizemos o que precisa ser feito, quanto tempo leva e quanto custa. Você só segue se fizer sentido.",
     };
   }
   if (modo === "cobrado") {
     return {
       pergunta: "Por que o diagnóstico é cobrado?",
-      resposta: `Porque é uma análise feita por engenharia e consultoria jurídica juntas. O valor de ${diagnostico.precoCobrado} é descontado do serviço se você seguir com a gente.`,
+      resposta: `Porque é uma análise feita por engenharia e consultoria jurídica juntas. O valor de ${diagnostico.precoCobrado} é descontado do serviço se você fechar conosco.`,
     };
   }
   return null;
 }
 
 export const ctaFinal = {
-  eyebrow: "Da irregularidade à tranquilidade",
-  titulo: "Fale com a JusVértice e descubra a situação do seu imóvel.",
+  eyebrow: "Fale com a JusVértice",
+  // Frase da própria marca (post "Da irregularidade à tranquilidade").
+  titulo: "Da irregularidade à tranquilidade.",
+  destaque: "à tranquilidade.",
+  texto: "Mande a matrícula pelo WhatsApp. O especialista analisa e diz o que precisa ser feito, em quanto tempo e quanto custa.",
   cta: "Falar no WhatsApp",
   alt: "Casa iluminada à noite, vista do jardim.",
 };

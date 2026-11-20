@@ -8,6 +8,7 @@ export function JsonLd({ faq }: { faq: { pergunta: string; resposta: string }[] 
       name: empresa.nome,
       legalName: empresa.razaoSocial,
       url: empresa.url,
+      telephone: `+${empresa.whatsapp}`,
       description:
         "Engenharia e consultoria jurídica para regularização imobiliária, topografia, georreferenciamento e projetos técnicos.",
       areaServed: empresa.cidades.map((c) => ({ "@type": "City", name: `${c} - ${empresa.uf}` })),

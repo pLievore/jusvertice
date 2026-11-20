@@ -76,6 +76,7 @@ export const paginaGeorreferenciamento: Pagina = {
   hero: {
     eyebrow: "Propriedade rural · Maringá e Ponta Grossa",
     titulo: "Sua terra está em ordem no cartório?",
+    destaque: "no cartório?",
     subtitulo:
       "Venda, herança e crédito rural travam quando a matrícula não bate com a terra. Nós medimos, acertamos a documentação e levamos até o registro.",
     cta: "Verificar minha propriedade",
@@ -85,8 +86,8 @@ export const paginaGeorreferenciamento: Pagina = {
   },
   checklist: {
     eyebrow: "Autodiagnóstico",
-    titulo: "Algum destes pontos acontece com a sua propriedade?",
-    intro: "Marque o que se aplica. Se não tiver certeza, marque também: o diagnóstico serve justamente para isso.",
+    titulo: "Sua propriedade tem algum destes sinais?",
+    intro: "Marque o que acontece com a sua terra. O que você marcar vai junto na mensagem, e o especialista já começa sabendo do caso.",
     itens: [
       { id: "rural-venda", texto: "Vou vender, dividir ou passar a terra para herdeiros" },
       { id: "rural-area", texto: "A área medida ou do CAR é diferente da matrícula" },
@@ -99,7 +100,7 @@ export const paginaGeorreferenciamento: Pagina = {
   },
   custo: {
     eyebrow: "O que muda",
-    titulo: "Com a documentação em ordem, a terra fica pronta para o que vier.",
+    titulo: "Documentação em ordem, terra pronta para o que vier.",
     colunas: ["Documentação irregular", "Documentação em ordem"],
     linhas: [
       ["Venda e transferência travam no cartório", "Venda e transferência registradas"],
@@ -155,11 +156,11 @@ export const paginaGeorreferenciamento: Pagina = {
         alt: "Mãos conferindo um contrato sobre a mesa, ao lado das chaves e de um par de óculos.",
       },
     ],
-    cta: "Falar sobre isso",
+    cta: "Falar sobre o meu caso",
   },
   comoFunciona: {
     eyebrow: "Como funciona",
-    titulo: "Três passos, e você decide com tudo na mesa.",
+    titulo: "Três passos. Você decide com tudo na mesa.",
     passos: [
       { titulo: "Você manda a matrícula", texto: "E o CCIR, se tiver. A localização da propriedade pode ir pelo próprio WhatsApp." },
       { titulo: "Os especialistas analisam", texto: "Engenharia, agrimensura e consultoria jurídica." },
@@ -167,41 +168,46 @@ export const paginaGeorreferenciamento: Pagina = {
     ],
     cta: "Começar meu diagnóstico",
   },
+  // PENDENTE: confirmar os tópicos de cada frente com o Paulo Henrique.
   capacidades: {
-    eyebrow: "Como fazemos",
+    eyebrow: "O que fazemos",
     titulo: "Do campo ao registro.",
-    // PENDENTE: trocar por uma frase da própria Gabi/Paulo Henrique, se houver
-    citacao: "Regularizar a terra é fazer a matrícula dizer exatamente o que existe no campo.",
+    intro: "Regularizar a terra é fazer a matrícula dizer exatamente o que existe no campo. A medição e a parte documental andam juntas, no mesmo escritório.",
     itens: [
       {
         titulo: "Medição e topografia",
         texto: "Levantamento da área e das divisas reais com receptores GNSS e estação total, vértice por vértice.",
+        topicos: ["Levantamento da área e das divisas", "Planta e memorial descritivo", "Demarcação com marcos"],
         imagem: imgCapGeo,
         alt: "Receptor GNSS sobre tripé à beira de uma plantação, ao nascer do sol.",
       },
       {
         titulo: "Georreferenciamento e retificação",
-        texto: "Certificação do levantamento no SIGEF/INCRA e correção da área na matrícula quando ela não confere com o campo.",
+        texto: "Certificação do levantamento no INCRA e correção da área na matrícula quando ela não confere com o campo.",
+        topicos: ["Certificação no SIGEF", "Retificação de área", "Desmembramento e unificação"],
         imagem: imgCapProjetos,
         alt: "Plantas, régua e laptop sobre a mesa de trabalho.",
       },
       {
         titulo: "Documentação e registro",
-        texto: "Desmembramento, partilha, declaração dos confrontantes e registro no cartório, conduzidos pela consultoria jurídica.",
+        texto: "Partilha, transferência e declaração dos confrontantes, conduzidas pela consultoria jurídica até o cartório.",
+        topicos: ["Partilha entre herdeiros", "Transferência e escritura", "Registro na matrícula"],
         imagem: imgSitGaveta,
         alt: "Gaveta de madeira entreaberta com um contrato dobrado e as chaves.",
       },
     ],
   },
   faq: {
-    eyebrow: "Perguntas frequentes",
+    eyebrow: "Dúvidas frequentes",
     titulo: "Antes de começar.",
     itens: faqGeorreferenciamento,
     cta: "Tirar uma dúvida no WhatsApp",
   },
   ctaFinal: {
-    eyebrow: "Da irregularidade à tranquilidade",
-    titulo: "Fale com a JusVértice e descubra a situação da sua terra.",
+    eyebrow: "Fale com a JusVértice",
+    titulo: "Da irregularidade à tranquilidade.",
+    destaque: "à tranquilidade.",
+    texto: "Mande a matrícula e, se tiver, o CCIR. O especialista analisa e diz o que a sua terra precisa, em quanto tempo e quanto custa.",
     cta: "Falar no WhatsApp",
     alt: "",
     imagem: imgCampoPenumbra,

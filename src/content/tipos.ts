@@ -21,6 +21,8 @@ export interface OrigensPagina {
 export interface ConteudoHero {
   eyebrow: string;
   titulo: string;
+  /** Trecho do título pintado de dourado (precisa aparecer literalmente em `titulo`). */
+  destaque?: string;
   subtitulo: string;
   cta: string;
   ctaSecundario: string;
@@ -89,11 +91,20 @@ export interface ConteudoComoFunciona {
   cta: string;
 }
 
+/** Serviços: o que a empresa faz, com os trabalhos de cada frente. */
 export interface ConteudoCapacidades {
   eyebrow: string;
   titulo: string;
-  citacao: string;
-  itens: { titulo: string; texto: string; imagem: StaticImageData; alt: string }[];
+  intro: string;
+  itens: {
+    titulo: string;
+    texto: string;
+    topicos: string[];
+    imagem: StaticImageData;
+    alt: string;
+    /** Página própria do serviço, quando existe (ex.: imóvel rural). */
+    link?: { href: string; texto: string };
+  }[];
 }
 
 export interface ItemFaq {
@@ -111,6 +122,9 @@ export interface ConteudoFaq {
 export interface ConteudoCtaFinal {
   eyebrow: string;
   titulo: string;
+  /** Trecho do título pintado de dourado. */
+  destaque?: string;
+  texto: string;
   cta: string;
   alt: string;
   /** Fundo da seção; sem ele, usa a imagem padrão (casa à noite). */

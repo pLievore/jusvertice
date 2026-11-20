@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Hero em palco escuro, mídia em tela cheia, copy ancorada embaixo à esquerda.
+ * Hero no azul da marca, mídia em tela cheia, copy ancorada embaixo à esquerda.
  *
  * Três modos, escolhidos sozinhos conforme a mídia disponível (src/content/hero-midia.json,
  * gerado por scripts/montar-hero.mjs a partir do vídeo do Veo 3):
@@ -14,15 +14,17 @@
  *  - Sem vídeo ainda / movimento reduzido: poster com movimento de câmera leve pela rolagem
  *    (reduzido: parado).
  *
- * O título entra palavra a palavra em CSS puro, começando em opacidade 0.01: não depende
- * de JS e o navegador já conta o título como LCP na primeira pintura.
+ * O título entra em CSS puro, começando em opacidade 0.01: não depende de JS e o navegador
+ * já conta o título como LCP na primeira pintura. A segunda frase (destaque) vem em dourado,
+ * numa linha própria, como nos posts.
  */
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import Image, { getImageProps } from "next/image";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import heroMidia from "@/content/hero-midia.json";
-import { microcopyDiagnostico, midia } from "@/content/site";
+import { empresa, midia, seloDiagnostico } from "@/content/site";
 import type { Pagina } from "@/content/tipos";
+import { comDestaque, Vertice } from "../Marcos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
 const QUADROS = heroMidia.quadros;
@@ -79,7 +81,6 @@ export function Hero({ pagina }: { pagina: Pagina }) {
   const deslocamento = useTransform(saindo, [0, 1], ["0%", "8%"]);
   const copyY = useTransform(scrubbing ? progresso : saindo, [0, 1], ["0%", scrubbing ? "-18%" : "-30%"]);
   const copyOpacidade = useTransform(scrubbing ? progresso : saindo, scrubbing ? [0.55, 0.82] : [0.15, 0.6], [1, 0]);
-  const indicador = useTransform(saindo, [0, 0.06], [1, 0]);
 
   // ── Sequência de quadros (só desktop) ─────────────────────────────────────
   useEffect(() => {
@@ -215,51 +216,46 @@ export function Hero({ pagina }: { pagina: Pagina }) {
             className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-stage to-transparent md:hidden"
           />
 
-          {/* Sombra de base: o texto sempre assenta no escuro */}
+          {/* Desktop: o azul da marca sobe da base e protege a copy sem apagar o campo */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 hidden md:block"
             style={{
               background:
-                "linear-gradient(to top, rgba(7,20,41,0.97) 0%, rgba(7,20,41,0.85) 28%, rgba(7,20,41,0.45) 55%, rgba(7,20,41,0.1) 78%, transparent 100%)",
+                "linear-gradient(to top, rgba(0,36,72,0.96) 0%, rgba(0,36,72,0.82) 26%, rgba(0,36,72,0.4) 52%, rgba(0,36,72,0.08) 76%, transparent 100%)",
             }}
           />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 hidden md:block"
-            style={{ background: "radial-gradient(125% 105% at 50% 40%, transparent 45%, rgba(7,20,41,0.6) 100%)" }}
-          />
-          {/* Sombra local atrás da copy: protege o texto sem escurecer a imagem inteira */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 hidden md:block"
-            style={{ background: "radial-gradient(70% 62% at 24% 78%, rgba(7,20,41,0.7) 0%, rgba(7,20,41,0.4) 45%, transparent 78%)" }}
+            style={{ background: "linear-gradient(100deg, rgba(0,36,72,0.72) 0%, rgba(0,36,72,0.35) 38%, transparent 62%)" }}
           />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 hidden h-40 md:block"
-            style={{ background: "linear-gradient(to bottom, rgba(7,20,41,0.7), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(0,36,72,0.65), transparent)" }}
           />
         </div>
 
         {/* Copy */}
         <motion.div
-          className="relative z-10 pb-12 pt-6 will-change-transform md:pb-20 md:pt-28"
+          className="relative z-10 pb-10 pt-6 will-change-transform md:pb-14 md:pt-28"
           style={reduce ? undefined : { y: copyY, opacity: copyOpacidade }}
         >
           <div className="container-x">
-            <p className="eyebrow entrar" style={{ "--d": 0 } as CSSProperties}>
+            <p className="rotulo entrar" style={{ "--d": 0 } as CSSProperties}>
+              <Vertice size={13} />
               {hero.eyebrow}
             </p>
             <h1
               id="hero-titulo"
-              className="display entrar-titulo mt-4 max-w-[13ch] text-[clamp(2.5rem,1.1rem+7.2vw,7.5rem)]"
-              style={{ textShadow: "0 1px 28px rgba(7,20,41,0.65)", "--d": 90 } as CSSProperties}
+              className="titulo-hero entrar-titulo mt-5 max-w-[22ch]"
+              style={{ textShadow: "0 2px 30px rgba(0,26,54,0.55)", "--d": 90 } as CSSProperties}
             >
-              {hero.titulo}
+              {comDestaque(hero.titulo, hero.destaque, true)}
             </h1>
             <p
-              className="entrar mt-6 max-w-[34rem] text-[1.0625rem] leading-relaxed text-stage-muted md:text-lg"
+              className="entrar mt-6 max-w-[36rem] text-[1.0625rem] leading-relaxed text-stage-muted md:text-[1.1875rem]"
               style={{ "--d": 260 } as CSSProperties}
             >
               {hero.subtitulo}
@@ -272,21 +268,21 @@ export function Hero({ pagina }: { pagina: Pagina }) {
                 {hero.ctaSecundario}
               </a>
             </div>
-            <p className="entrar meta mt-4" style={{ "--d": 460 } as CSSProperties}>
-              {microcopyDiagnostico()}
-            </p>
+
+            {/* Credenciais reais: registro, quem atende e o diagnóstico */}
+            <ul
+              className="entrar mt-10 flex flex-col gap-2.5 border-t border-stage-border pt-6 text-[0.9375rem] text-stage-muted sm:flex-row sm:flex-wrap sm:gap-x-8 md:mt-12"
+              style={{ "--d": 480 } as CSSProperties}
+            >
+              {[empresa.crea, "Engenharia e consultoria jurídica", seloDiagnostico()].map((item) => (
+                <li key={item} className="flex items-center gap-2.5">
+                  <Vertice size={12} className="text-gold" />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </motion.div>
-
-        {!reduce && (
-          <motion.div
-            aria-hidden="true"
-            className="absolute bottom-6 right-[var(--gutter)] z-10 hidden md:block"
-            style={{ opacity: indicador }}
-          >
-            <span className="pulso-rolagem block h-10 w-px bg-gold" />
-          </motion.div>
-        )}
       </div>
     </section>
   );

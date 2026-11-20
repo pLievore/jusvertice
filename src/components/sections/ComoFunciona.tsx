@@ -2,62 +2,61 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { type CSSProperties, useRef } from "react";
-import { microcopyDiagnostico } from "@/content/site";
 import type { Pagina } from "@/content/tipos";
+import { CabecalhoSecao } from "../Marcos";
 import { WhatsAppLink } from "../WhatsAppLink";
 
-/** Linha que liga os três passos e se desenha conforme a rolagem (vertical no celular, horizontal no desktop). */
+/**
+ * Os três passos como uma poligonal de levantamento: cada passo é um marco, ligados por
+ * tracejado que se desenha conforme a rolagem (vertical no celular, horizontal no desktop).
+ */
 export function ComoFunciona({ pagina }: { pagina: Pagina }) {
   const comoFunciona = pagina.comoFunciona;
   const reduce = useReducedMotion();
   const ref = useRef<HTMLOListElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 45%"] });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 50%"] });
   const linha = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section aria-labelledby="como-titulo" className="on-stage relative overflow-hidden py-24 md:py-36">
+    <section id="como-funciona" aria-labelledby="como-titulo" className="relative py-24 md:py-32">
       <div className="container-x">
-        <p className="eyebrow" data-reveal>
-          {comoFunciona.eyebrow}
-        </p>
-        <h2 id="como-titulo" className="titulo mt-5 max-w-[16ch]" data-reveal style={{ "--i": 1 } as CSSProperties}>
-          {comoFunciona.titulo}
-        </h2>
+        <CabecalhoSecao id="como-titulo" rotulo={comoFunciona.eyebrow} titulo={comoFunciona.titulo} />
 
-        <ol ref={ref} className="relative mt-16 grid gap-12 pl-10 md:mt-24 md:grid-cols-3 md:gap-10 md:pl-0 md:pt-12">
-          {/* Trilho + traço */}
-          <span aria-hidden="true" className="absolute bottom-2 left-[0.3rem] top-2 w-px bg-stage-border md:inset-x-0 md:bottom-auto md:top-0 md:h-px md:w-auto" />
+        <ol ref={ref} className="relative mt-14 grid gap-12 pl-16 md:mt-20 md:grid-cols-3 md:gap-10 md:pl-0 md:pt-20">
+          {/* Trilho tracejado + o mesmo tracejado em dourado, revelado pela rolagem */}
+          {/* A escala vai sempre no style: tirar a prop deixaria o último valor (0) aplicado. */}
+          <span aria-hidden="true" className="tracejado-v absolute bottom-6 left-[1.45rem] top-6 w-px text-muted/35 md:hidden" />
           <motion.span
             aria-hidden="true"
-            className="absolute bottom-2 left-[0.3rem] top-2 hidden w-px origin-top bg-gold max-md:block"
-            style={reduce ? undefined : { scaleY: linha }}
+            className="tracejado-v absolute bottom-6 left-[1.45rem] top-6 w-[2px] origin-top text-gold-ink md:hidden"
+            style={{ scaleY: reduce ? 1 : linha }}
           />
+          <span aria-hidden="true" className="tracejado absolute left-[1.45rem] right-[calc((100%_-_5rem)/3_-_1.45rem)] top-[1.45rem] hidden h-px text-muted/35 md:block" />
           <motion.span
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 hidden h-px origin-left bg-gold md:block"
-            style={reduce ? undefined : { scaleX: linha }}
+            className="tracejado absolute left-[1.45rem] right-[calc((100%_-_5rem)/3_-_1.45rem)] top-[1.45rem] hidden h-[2px] origin-left bg-[length:8px_2px] text-gold-ink md:block"
+            style={{ scaleX: reduce ? 1 : linha }}
           />
 
           {comoFunciona.passos.map((passo, i) => (
             <li key={passo.titulo} className="relative" data-reveal style={{ "--i": i } as CSSProperties}>
+              {/* Marco numerado */}
               <span
                 aria-hidden="true"
-                className="absolute -left-10 top-1 size-[0.65rem] rotate-45 border border-gold bg-stage md:-top-[3.05rem] md:left-0"
-              />
-              <span aria-hidden="true" className="display block text-[3.5rem] leading-none text-gold-light md:text-[4.5rem]">
+                className="absolute -left-16 top-0 grid size-[2.9rem] place-items-center rounded-full border-2 border-stage bg-background font-display text-[1.35rem] font-semibold leading-none text-stage md:-top-20 md:left-0"
+              >
                 {i + 1}
               </span>
-              <h3 className="mt-4 font-display text-[1.6rem] leading-tight md:text-[1.9rem]">
+              <h3 className="font-display text-[1.75rem] font-semibold uppercase leading-[1.05] md:text-[2rem]">
                 <span className="sr-only">Passo {i + 1}: </span>
                 {passo.titulo}
               </h3>
-              <p className="mt-3 max-w-[22rem] text-stage-muted md:text-lg">{passo.texto}</p>
+              <p className="mt-3 max-w-[22rem] text-muted md:text-lg">{passo.texto}</p>
             </li>
           ))}
         </ol>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-stage-border pt-10 sm:flex-row sm:items-center sm:justify-between md:mt-24" data-reveal>
-          <p className="meta">{microcopyDiagnostico()}</p>
+        <div className="mt-14 md:mt-20" data-reveal>
           <WhatsAppLink origem={pagina.origens.comoFunciona} arrow className="btn btn-primary">
             {comoFunciona.cta}
           </WhatsAppLink>
