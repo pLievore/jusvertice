@@ -52,6 +52,14 @@ export default function PainelLayout({ children }: LayoutProps<"/admin">) {
       </aside>
 
       <div className="pb-24 lg:pb-0 lg:pl-60">
+        {/* Celular: a marca numa barra azul (o logo original só funciona sobre o azul) */}
+        <Link href="/admin" className="flex h-14 items-center gap-2.5 bg-[#002448] px-4 text-white lg:hidden">
+          <Monogram id="logo-painel-celular" className="h-8 w-auto" />
+          <Wordmark className="!text-[1.25rem]" />
+          <span className="ml-1 rounded-full border border-[#cca85e]/50 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[#cca85e]">
+            Painel
+          </span>
+        </Link>
         <Suspense fallback={null}>
           <FaixaDemo />
         </Suspense>

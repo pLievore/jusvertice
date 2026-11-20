@@ -1,35 +1,25 @@
 /**
  * Monograma JV redesenhado em SVG a partir dos posts (o arquivo vetorial original ainda não foi enviado).
- * `palco`: J dourado e V prateado, como no material da marca.
- * `papel`: ouro mais escuro e V em tinta, para não sumir no fundo claro.
+ * Sempre nas cores originais da marca, J dourado e V prateado, e sempre sobre o azul da marca:
+ * o prateado vai do branco ao cinza e sumiria num fundo claro. Por isso o cabeçalho do site e o
+ * do painel são azuis (pedido do cliente: uma versão do logo só).
  */
-type Variante = "palco" | "papel";
-
-export function Monogram({
-  id,
-  className,
-  variante = "palco",
-}: {
-  id: string;
-  className?: string;
-  variante?: Variante;
-}) {
+export function Monogram({ id, className }: { id: string; className?: string }) {
   const gold = `${id}-gold`;
   const silver = `${id}-silver`;
   const clip = `${id}-clip`;
-  const papel = variante === "papel";
   return (
     <svg viewBox="0 0 200 210" className={className} aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id={gold} x1="0" y1="0" x2="0.35" y2="1">
-          <stop offset="0" stopColor={papel ? "#C9A45C" : "#F6E6B4"} />
-          <stop offset="0.5" stopColor={papel ? "#A07E3C" : "#D6B26A"} />
-          <stop offset="1" stopColor={papel ? "#7A5C22" : "#9E7A35"} />
+          <stop offset="0" stopColor="#F6E6B4" />
+          <stop offset="0.5" stopColor="#D6B26A" />
+          <stop offset="1" stopColor="#9E7A35" />
         </linearGradient>
         <linearGradient id={silver} x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor={papel ? "#3A4A66" : "#FFFFFF"} />
-          <stop offset="0.5" stopColor={papel ? "#1B2A45" : "#CDD2DA"} />
-          <stop offset="1" stopColor={papel ? "#0E1A2E" : "#7E8794"} />
+          <stop offset="0" stopColor="#FFFFFF" />
+          <stop offset="0.5" stopColor="#CDD2DA" />
+          <stop offset="1" stopColor="#7E8794" />
         </linearGradient>
         <clipPath id={clip}>
           <path d="M0 0H200V82L125 200L76 90H0Z" />
