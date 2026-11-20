@@ -186,7 +186,8 @@ export const diferencial = {
     "Quando só uma das partes é resolvida, o imóvel continua travado. Aqui as duas andam juntas, do levantamento no terreno até o registro na matrícula.",
   ],
   pessoas: [
-    { nome: "Gabriella Stacheski", papel: "Advogada especialista em direito imobiliário" },
+    // Pedido da Gabi (19/11): sem "Advogada".
+    { nome: "Gabriella Stacheski", papel: "Especialista em direito imobiliário, negocial e regularização imobiliária" },
     { nome: "Paulo Henrique Bobato", papel: "Engenheiro civil e técnico agrimensor" },
   ],
   fotoAlt: "Gabriella Stacheski e Paulo Henrique Bobato, da JusVértice, sorrindo em frente a uma casa iluminada à noite.",
